@@ -472,7 +472,7 @@ function doErrorCheck() {
     }
     numforms++;
     out = '<div id="citediv'+numforms+'"><fieldset>'+
-      '<legend>Sprawdzanie błędów</legend>No errors found.</fieldset></div>';
+      '<legend>Sprawdzanie błędów</legend>Nie znaleziono żadnych błędów.</fieldset></div>';
     document.getElementById('citeselect').innerHTML += out;
   }
   else {
