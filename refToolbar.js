@@ -117,7 +117,7 @@ function citeWeb() {
  
 function citeBook() {
   oldFormHide();
-  template = "cite book";
+  template = "cytuj książkę";
   numforms++;
   form = '<div id="citediv'+numforms+'">'+
     '<fieldset><legend>Cytowanie wydawnictw zwartych (książek)</legend>'+
