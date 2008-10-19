@@ -455,7 +455,7 @@ function dispErrors() {
     '<b>Sprawdź:</b><br/>'+
     '<input type="checkbox" id="unclosed" /> Niedomknięte tagi <tt>&lt;ref&gt;</tt><br/>'+
     '<input type="checkbox" id="samecontent" /> Przypisy z tymi samymi danymi<br/>'+
-    '<input type="checkbox" id="templates" /> Przypisy niewykorzystujące <a href="http://en.wikipedia.org/wiki/Wikipedia:Citation_templates">szablonów cytowania</a><br/>'+
+    '<input type="checkbox" id="templates" /> Przypisy niewykorzystujące szablonów cytowania<br/>'+
     '<input type="checkbox" id="repeated" /> Powtórzone przypisy o tej samej nazwie<br/>'+
     '<input type="checkbox" id="undef" /> Użycie zagubionych przypisów o przypisanych nazwach<br/>'+
     '<input type="button" id="errorchecksubmit" value="Sprawdzenie pod kątem wybranych błędów" onclick="doErrorCheck()"/>'+
