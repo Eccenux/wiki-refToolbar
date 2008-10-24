@@ -95,6 +95,8 @@ function citeWeb() {
               '<td width="400"><input type="text" style="width:100%" id="nazwisko2"></td>'+
     '<td width="120"><label for="imię2">&nbsp;Imię 2. autora: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="imię2"></td></tr>'+
+    '<tr><td width="120"><label for="autor">&nbsp;Autor: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="autor"></td></tr>'+
     '<td width="120"><label for="data">&nbsp;Data publikacji: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="data"></td></tr>'+
     '<tr><td width="120"><label for="work">&nbsp;Praca: </label></td>'+
@@ -131,6 +133,8 @@ function citeBook() {
               '<td width="400"><input type="text" style="width:100%" id="nazwisko2"></td>'+
     '<td width="120"><label for="imię2">&nbsp;Imię 2. autora: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="imię2"></td></tr>'+
+    '<tr><td width="120"><label for="autor">&nbsp;Autor: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="autor"></td></tr>'+
     '<tr><td width="120"><label for="tytuł">&nbsp;Tytuł: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="tytuł"></td>'+
     '<td width="120"><label for="inni">&nbsp;Inni: </label></td>'+
@@ -183,6 +187,8 @@ function citeJournal() {
               '<td width="400"><input type="text" style="width:100%" id="nazwisko2"></td>'+
     '<td width="120"><label for="imię2">&nbsp;Imię 2. autora: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="imię2"></td></tr>'+
+    '<tr><td width="120"><label for="autor">&nbsp;Autor: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="autor"></td></tr>'+
     '<tr><td width="120"><label for="tytuł">&nbsp;Tytuł: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="tytuł"></td>'+
     '<td width="120"><label for="czasopismo">&nbsp;Czasopismo: </label></td>'+
@@ -453,11 +459,11 @@ function dispErrors() {
   form = '<div id="errorform"><fieldset>'+
     '<legend>Sprawdzanie błędów</legend>'+
     '<b>Sprawdź:</b><br/>'+
-    '<input type="checkbox" id="unclosed" /> Niedomknięte tagi <tt>&lt;ref&gt;</tt><br/>'+
-    '<input type="checkbox" id="samecontent" /> Przypisy z tymi samymi danymi<br/>'+
-    '<input type="checkbox" id="templates" /> Przypisy niewykorzystujące szablonów cytowania<br/>'+
-    '<input type="checkbox" id="repeated" /> Powtórzone przypisy o tej samej nazwie<br/>'+
-    '<input type="checkbox" id="undef" /> Użycie zagubionych przypisów o przypisanych nazwach<br/>'+
+    '<input type="checkbox" id="unclosed" checked="checked" /> Niedomknięte tagi <tt>&lt;ref&gt;</tt><br/>'+
+    '<input type="checkbox" id="samecontent" checked="checked" /> Przypisy z tymi samymi danymi<br/>'+
+    '<input type="checkbox" id="templates" checked="checked" /> Przypisy niewykorzystujące szablonów cytowania<br/>'+
+    '<input type="checkbox" id="repeated" checked="checked" /> Powtórzone przypisy o tej samej nazwie<br/>'+
+    '<input type="checkbox" id="undef" checked="checked" /> Użycie nazwanych przypisów bez treści/definicji<br/>'+
     '<input type="button" id="errorchecksubmit" value="Sprawdzenie pod kątem wybranych błędów" onclick="doErrorCheck()"/>'+
     '</fieldset></div>';
   document.getElementById('citeselect').innerHTML += form;
