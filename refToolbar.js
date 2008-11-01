@@ -155,6 +155,10 @@ function citeBook() {
               '<td width="400"><input type="text" style="width:100%" id="strony"></td>'+
     '<td width="120"><label for="rozdział">&nbsp;Tytuł rozdziału: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="rozdział"></td></tr>'+
+    '<tr><td width="120"><label for="imię r">&nbsp;Imię autora rozdziału: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="imię r"></td>'+
+    '<td width="120"><label for="nazwisko r">&nbsp;Nazwisko autora rozdziału: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="nazwisko r"></td></tr>'+
     '<tr><td width="120"><label for="isbn">&nbsp;ISBN: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="isbn"></td>'+
     '<td width="120"><label for="oclc">&nbsp;OCLC: </label></td>'+
@@ -197,8 +201,8 @@ function citeJournal() {
               '<td width="400"><input type="text" style="width:100%" id="wydawca"></td>'+
     '<td width="120"><label for="odpowiedzialność">&nbsp;Odpowiedzialność: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="odpowiedzialność"></td></tr>'+
-    '<tr><td width="120"><label for="oznaczenie">&nbsp;Oznaczenie: </label></td>'+
-              '<td width="400"><input type="text" style="width:100%" id="oznaczenie"></td>'+
+    '<tr><td width="120"><label for="wydanie">&nbsp;Wydanie: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="wydanie"></td>'+
     '<td width="120"><label for="numer">&nbsp;Numer: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="numer"></td></tr>'+
     '<tr><td width="120"><label for="strony">&nbsp;Strony: </label></td>'+
