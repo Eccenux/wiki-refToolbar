@@ -129,16 +129,10 @@ function citeBook() {
               '<td width="400"><input type="text" style="width:100%" id="nazwisko"></td>'+
     '<td width="120"><label for="imię">&nbsp;Imię: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="imię"></td></tr>'+
-    '<tr><td width="120"><label for="nazwisko2">&nbsp;Nazwisko&nbsp;2.&nbsp;autora: </label></td>'+
-              '<td width="400"><input type="text" style="width:100%" id="nazwisko2"></td>'+
-    '<td width="120"><label for="imię2">&nbsp;Imię 2. autora: </label></td>'+
-              '<td width="400"><input type="text" style="width:100%" id="imię2"></td></tr>'+
     '<tr><td width="120"><label for="autor">&nbsp;Autor: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="autor"></td></tr>'+
     '<tr><td width="120"><label for="tytuł">&nbsp;Tytuł: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="tytuł"></td>'+
-    '<td width="120"><label for="inni">&nbsp;Inni: </label></td>'+
-              '<td width="400"><input type="text" style="width:100%" id="inni"></td></tr>'+
     '<tr><td width="120"><label for="wydawca">&nbsp;Wydawnictwo: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="wydawca"></td>'+
     '<td width="120"><label for="miejsce">&nbsp;Miejsce wydania: </label></td>'+
@@ -147,32 +141,56 @@ function citeBook() {
               '<td width="400"><input type="text" style="width:100%" id="data"></td>'+
     '<td width="120"><label for="seria">&nbsp;Tytuł serii: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="seria"></td></tr>'+
+    '<tr><td width="120"><label for="strony">&nbsp;Strony: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="strony"></td>'+
+    '<tr><td width="120"><label for="isbn">&nbsp;ISBN: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="isbn"></td>'+
+    '<td width="120"><label for="refname">&nbsp;Nazwa przypisu: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="refname"></td></tr>'+
+    '</table>'+
+	'<table cellspacing="5" class="collapsible collapsed noprint" style="background: transparent; width: 100%; border: 1px solid #dddddd;" cellspacing="0" cellpadding="0">'+
+	'<tr><th colspan="4">Dodatkowe pola</th></tr>'+
+	'<tr><td width="120"><label for="nazwisko2">&nbsp;Nazwisko&nbsp;2.&nbsp;autora: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="nazwisko2"></td>'+
+    '<td width="120"><label for="imię2">&nbsp;Imię 2. autora: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="imię2"></td></tr>'+
+	'<tr><td width="120"><label for="nazwisko2">&nbsp;Nazwisko&nbsp;3.&nbsp;autora: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="nazwisko3"></td>'+
+    '<td width="120"><label for="imię2">&nbsp;Imię 3. autora: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="imię3"></td></tr>'+
+	'<tr><td width="120"><label for="nazwisko2">&nbsp;Nazwisko&nbsp;4.&nbsp;autora: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="nazwisko4"></td>'+
+    '<td width="120"><label for="imię2">&nbsp;Imię 4. autora: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="imię4"></td></tr>'+
+	'<tr><td width="120"><label for="nazwisko2">&nbsp;Nazwisko&nbsp;5.&nbsp;autora: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="nazwisko5"></td>'+
+    '<td width="120"><label for="imię2">&nbsp;Imię 5. autora: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="imię5"></td></tr>'+
+    '<tr><td width="120"><label for="inni">&nbsp;Inni: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="inni"></td></tr>'+
     '<tr><td width="120"><label for="tom">&nbsp;Numer tomu: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="tom"></td>'+
     '<td width="120"><label for="tytuł tomu">&nbsp;Tytuł tomu: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="tytuł tomu"></td></tr>'+
-    '<tr><td width="120"><label for="strony">&nbsp;Strony: </label></td>'+
-              '<td width="400"><input type="text" style="width:100%" id="strony"></td>'+
-    '<td width="120"><label for="rozdział">&nbsp;Tytuł rozdziału: </label></td>'+
+    '<tr><td width="120"><label for="rozdział">&nbsp;Tytuł rozdziału: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="rozdział"></td></tr>'+
     '<tr><td width="120"><label for="imię r">&nbsp;Imię autora rozdziału: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="imię r"></td>'+
     '<td width="120"><label for="nazwisko r">&nbsp;Nazwisko autora rozdziału: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="nazwisko r"></td></tr>'+
-    '<tr><td width="120"><label for="isbn">&nbsp;ISBN: </label></td>'+
-              '<td width="400"><input type="text" style="width:100%" id="isbn"></td>'+
-    '<td width="120"><label for="oclc">&nbsp;OCLC: </label></td>'+
-              '<td width="400"><input type="text" style="width:100%" id="oclc"></td></tr>'+
-    '<tr><td width="120"><label for="url">&nbsp;URL: </label></td>'+
-              '<td width="400"><input type="text" style="width:100%" id="url"></td>'+
+    '<tr><td width="120"><label for="url">&nbsp;DOI: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="doi"></td>'+
     '<td width="120"><label for="data dostępu">&nbsp;Data dostępu: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="data dostępu"></td></tr>'+
-    '<tr><td width="120"><label for="refname">&nbsp;Nazwa przypisu: </label></td>'+
-              '<td width="400"><input type="text" style="width:100%" id="refname"></td></tr>'+
-    '</table>'+
+    '<tr><td width="120"><label for="url">&nbsp;URL: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="url"></td>'+
+    '<td width="120"><label for="oclc">&nbsp;OCLC: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="oclc"></td></tr>'+
+	'</table>'+
     '<input type="button" value="Dodaj przypis" onClick="addcites()">'+
- '</fieldset></div>';
+	'</fieldset></div>';
    document.getElementById('citeselect').innerHTML += form;
+   createCollapseButtons();
 }
  
 function citeJournal() {
@@ -217,7 +235,9 @@ function citeJournal() {
               '<td width="400"><input type="text" style="width:100%" id="data"></td>'+
     '<td width="120"><label for="url">&nbsp;URL: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="url"></td>'+
-    '<tr><td width="120"><label for="refname">&nbsp;Nazwa przypisu: </label></td>'+
+    '<tr><td width="120"><label for="url">&nbsp;DOI: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="doi"></td>'+
+    '<td width="120"><label for="refname">&nbsp;Nazwa przypisu: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="refname"></td></tr>'+
     '</table>'+
     '<input type="button" value="Dodaj przypis" onClick="addcites()">'+
