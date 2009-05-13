@@ -3,7 +3,7 @@
 var numforms = 0;
 var wikEdAutoUpdateUrl;
 function refbuttons() {
-  if (mwCustomEditButtons && document.getElementById('toolbar') && wikEdAutoUpdateUrl == null) {
+  if (mwCustomEditButtons && document.getElementById('toolbar')/* && wikEdAutoUpdateUrl == null*/) {
     button = document.createElement('a');
     button.href = "javascript:easyCiteMain()";
     button.title = "Wstaw szablon cytowania";
