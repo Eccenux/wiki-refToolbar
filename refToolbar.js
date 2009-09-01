@@ -221,8 +221,8 @@ function citeJournal() {
               '<td width="400"><input type="text" style="width:100%" id="odpowiedzialność"></td></tr>'+
     '<tr><td width="120"><label for="wydanie">&nbsp;Wydanie: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="wydanie"></td>'+
-    '<td width="120"><label for="numer">&nbsp;Numer: </label></td>'+
-              '<td width="400"><input type="text" style="width:100%" id="numer"></td></tr>'+
+    '<td width="120"><label for="wolumin">&nbsp;Wolumin: </label></td>'+
+              '<td width="400"><input type="text" style="width:100%" id="wolumin"></td></tr>'+
     '<tr><td width="120"><label for="strony">&nbsp;Strony: </label></td>'+
               '<td width="400"><input type="text" style="width:100%" id="strony"></td>'+
     '<td width="120"><label for="issn">&nbsp;ISSN: </label></td>'+
