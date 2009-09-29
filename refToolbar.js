@@ -3,15 +3,26 @@
 var numforms = 0;
 var wikEdAutoUpdateUrl;
 function refbuttons() {
-  if (mwCustomEditButtons && document.getElementById('toolbar')/* && wikEdAutoUpdateUrl == null*/) {
-    button = document.createElement('a');
-    button.href = "javascript:easyCiteMain()";
-    button.title = "Wstaw szablon cytowania";
-    buttonimage = document.createElement('img');
-    buttonimage.src = "http://upload.wikimedia.org/wikipedia/commons/b/bf/Button_easy_cite_pl.png";
-    buttonimage.alt = "Wstaw szablon przypisu";
-    button.appendChild(buttonimage);
-    document.getElementById('toolbar').appendChild(button);
+  if (mwCustomEditButtons && (document.getElementById('toolbar') || document.getElementById('wikiEditor-ui-toolbar'))/* && wikEdAutoUpdateUrl == null*/) {
+    if (document.getElementById('toolbar')) {
+      button = document.createElement('a');
+      button.href = "javascript:easyCiteMain()";
+      button.title = "Wstaw szablon cytowania";
+      buttonimage = document.createElement('img');
+      buttonimage.src = "http://upload.wikimedia.org/wikipedia/commons/b/bf/Button_easy_cite_pl.png";
+      buttonimage.alt = "Wstaw szablon przypisu";
+      button.appendChild(buttonimage);
+      document.getElementById('toolbar').appendChild(button);
+    } else {
+      buttonimage = document.createElement('img');
+      buttonimage.src = "http://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Curly_Brackets.svg/22px-Curly_Brackets.svg.png";
+      buttonimage.alt = "Wstaw szablon cytowania";
+      buttonimage.classname = "tool tool-button";
+      buttonimage.style.width = "22px";
+      buttonimage.style.height = "17px";
+      buttonimage.onclick = easyCiteMain;
+      document.getElementById('wikiEditor-ui-toolbar').childNodes[2].childNodes[0].childNodes[4].appendChild(buttonimage);
+    }
     if (navigator.userAgent.indexOf('MSIE') == -1) {
       citemain = document.createElement('div');
       citemain.style.display = 'none';
