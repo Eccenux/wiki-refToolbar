@@ -17,6 +17,7 @@ function refbuttons() {
       buttonimage = document.createElement('img');
       buttonimage.src = "http://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Curly_Brackets.svg/22px-Curly_Brackets.svg.png";
       buttonimage.alt = "Wstaw szablon cytowania";
+      buttonimage.title = "Wstaw szablon cytowania";
       buttonimage.classname = "tool tool-button";
       buttonimage.style.width = "22px";
       buttonimage.style.height = "17px";
