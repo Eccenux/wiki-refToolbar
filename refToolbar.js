@@ -13,7 +13,7 @@ var tmp_refsTB_VERSION = '1.1.0';
 //
 // Object Init
 //
-if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && refsTB!=undefined && (typeof refsTB.version)!='string')
+if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && refsTB!=undefined)
 {
 	alert('Błąd krytyczny - konflikt nazw!'+
 		'\n\n'+
