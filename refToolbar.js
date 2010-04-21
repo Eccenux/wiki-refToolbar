@@ -8,7 +8,7 @@
   Version:
     (see below) = refsTB.version
 \* ------------------------------------------------------------------------ */
-var tmp_refsTB_VERSION = '1.1.0';
+var tmp_refsTB_VERSION = '1.1.1';
 
 //
 // Object Init
@@ -61,7 +61,7 @@ refsTB.refbuttons = function () {
 			var advsec = getElementsByClassName(document.getElementById('wikiEditor-ui-toolbar'), "div", "section-advanced")[0];
 			var groupel = getElementsByClassName(advsec, "div", "group-insert")[0];
 			var buttonimage = document.createElement('img');
-			buttonimage.src = "http://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Curly_Brackets.svg/22px-Curly_Brackets.svg.png";
+			buttonimage.src = "http://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Curly_Brackets_cytuj.svg/22px-Curly_Brackets_cytuj.svg.png";
 			buttonimage.alt = "Wstaw szablon cytowania";
 			buttonimage.title = "Wstaw szablon cytowania";
 			buttonimage.className = "tool tool-button";
