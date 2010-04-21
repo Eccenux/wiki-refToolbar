@@ -65,7 +65,7 @@ refsTB.refbuttons = function () {
 			buttonimage.alt = "Wstaw szablon cytowania";
 			buttonimage.title = "Wstaw szablon cytowania";
 			buttonimage.className = "tool tool-button";
-			buttonimage.style.cssText = "width: 22px; height: 22px; padding-top:0px";
+			buttonimage.style.cssText = "width: 22px; height: 22px; padding-top:2px";
 			buttonimage.onclick = refsTB.easyCiteMain;
 			groupel.appendChild(buttonimage);
 		}
