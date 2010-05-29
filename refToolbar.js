@@ -8,7 +8,7 @@
   Version:
     (see below) = refsTB.version
 \* ------------------------------------------------------------------------ */
-var tmp_refsTB_VERSION = '1.1.1';
+var tmp_refsTB_VERSION = '1.1.2';
 
 //
 // Object Init
@@ -327,6 +327,7 @@ refsTB.addcites = function (template) {
 		}
 	}
 	cite = citebegin + citename + citeinner + "}}</ref>";
+	document.getElementById('wpTextbox1').focus();	// focus first
 	insertTags(cite, '', '');
 	document.getElementById('citediv'+refsTB.numforms).style.display = 'none';
 }
@@ -396,6 +397,7 @@ refsTB.citeNamedRef = function () {
 refsTB.addnamedcite = function () {
 	name = document.getElementById('citediv'+refsTB.numforms).getElementsByTagName('select')[0].value;
 	ref = '<ref name="'+name+'" />';
+	document.getElementById('wpTextbox1').focus();	// focus first
 	insertTags(ref, '', '');
 	document.getElementById('citediv'+refsTB.numforms).style.display = 'none';	
 }
