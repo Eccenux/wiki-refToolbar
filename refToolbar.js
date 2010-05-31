@@ -8,7 +8,7 @@
   Version:
     (see below) = refsTB.version
 \* ------------------------------------------------------------------------ */
-var tmp_refsTB_VERSION = '1.2.0';
+var tmp_refsTB_VERSION = '1.2.1';
 
 //
 // Object Init
@@ -51,7 +51,7 @@ refsTB.refbuttons = function () {
 		if (document.getElementById('toolbar')) {
 			var button = document.createElement('a');
 			button.href = "javascript:refsTB.easyCiteMain()";
-			button.title = "Wstaw szablon cytowania";
+			button.title = "Wstaw szablon cytowania (wer: "+refsTB.version+")";
 			buttonimage = document.createElement('img');
 			buttonimage.src = "http://upload.wikimedia.org/wikipedia/commons/b/bf/Button_easy_cite_pl.png";
 			buttonimage.alt = "Wstaw szablon przypisu";
@@ -63,7 +63,7 @@ refsTB.refbuttons = function () {
 			var buttonimage = document.createElement('img');
 			buttonimage.src = "http://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Curly_Brackets_cytuj.svg/22px-Curly_Brackets_cytuj.svg.png";
 			buttonimage.alt = "Wstaw szablon cytowania";
-			buttonimage.title = "Wstaw szablon cytowania";
+			buttonimage.title = "Wstaw szablon cytowania (wer: "+refsTB.version+")";
 			buttonimage.className = "tool tool-button";
 			buttonimage.style.cssText = "width: 22px; height: 22px; padding-top:2px";
 			buttonimage.onclick = refsTB.easyCiteMain;
