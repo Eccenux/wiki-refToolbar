@@ -8,7 +8,7 @@
   Version:
     (see below) = refsTB.version
 \* ------------------------------------------------------------------------ */
-var tmp_refsTB_VERSION = '1.1.2';
+var tmp_refsTB_VERSION = '1.2.0';
 
 //
 // Object Init
@@ -69,34 +69,24 @@ refsTB.refbuttons = function () {
 			buttonimage.onclick = refsTB.easyCiteMain;
 			groupel.appendChild(buttonimage);
 		}
-		if (navigator.userAgent.indexOf('MSIE') == -1) {
-			citemain = document.createElement('div');
-			citemain.style.display = 'none';
-			citemain.setAttribute('Id', 'citeselect');
-			citemain.appendChild( refsTB.addOption("refsTB.citeWeb()", "Strona WWW") );
-			citemain.appendChild( refsTB.addOption("refsTB.citeBook()", "Książka") );
-			citemain.appendChild( refsTB.addOption("refsTB.citeJournal()", "Pismo") );
-			citemain.appendChild( refsTB.addOption("refsTB.citeNamedRef()", "Istniejące przypisy") );
-			citemain.appendChild( refsTB.addOption("refsTB.dispErrors()", "Sprawdzenie błędów") );
-			citemain.appendChild( refsTB.addOption("refsTB.hideInitial()", "Anuluj") );
-			document.getElementById('wpTextbox1').parentNode.insertBefore(citemain, document.getElementById('wpTextbox1'));
-		}
-		else {
-			selection = '<div id="citeselect" style="display:none"><input type="button" value="Strona WWW" onclick="refsTB.citeWeb()" />'+
-				'<input type="button" value="Książka" onclick="refsTB.citeBook()" />'+
-				'<input type="button" value="Pismo" onclick="refsTB.citeJournal()" />'+
-				'<input type="button" value="Istniejące przypisy" onclick="refsTB.citeNamedRef()" />'+
-				'<input type="button" value="Sprawdzenie błędów" onclick="refsTB.dispErrors()" />'+
-				'<input type="button" value="Anuluj" onclick="refsTB.hideInitial()" /></div>';
-			document.getElementById('editform').innerHTML = selection + document.getElementById('editform').innerHTML;
-		}
+		var citemain = document.createElement('div');
+		citemain.style.display = 'none';
+		citemain.setAttribute('id', 'citeselect');
+		citemain.appendChild( refsTB.addOption("refsTB.citeWeb()", "Strona WWW") );
+		citemain.appendChild( refsTB.addOption("refsTB.citeBook()", "Książka") );
+		citemain.appendChild( refsTB.addOption("refsTB.citeJournal()", "Pismo") );
+		citemain.appendChild( refsTB.addOption("refsTB.citeNamedRef()", "Istniejące przypisy") );
+		citemain.appendChild( refsTB.addOption("refsTB.dispErrors()", "Sprawdzenie błędów") );
+		citemain.appendChild( refsTB.addOption("refsTB.hideInitial()", "Anuluj") );
+		var txtarea = document.getElementById('wpTextbox1');
+		txtarea.parentNode.insertBefore(citemain, txtarea);
 	}
 }
 
 refsTB.addOption = function (script, text) {
-	option = document.createElement('input');
+	var option = document.createElement('input');
 	option.setAttribute('type', 'button');
-	option.setAttribute('onclick', script);
+	option.onclick = new Function(script);
 	option.setAttribute("value", text);
 	return option;
 }
@@ -138,13 +128,39 @@ refsTB.getTime = function () {
 	return (newtime);
 }
 
+refsTB.parseCiteForm = function (form_id) {
+	var els = document.getElementById(form_id).getElementsByTagName('input');
+	for (var i=0; i<els.length; i++)
+	{
+		if (els[i].getAttribute('type')!='hidden')
+		{
+			els[i].setAttribute('tabindex', 100+i);
+		}
+		if (els[i].getAttribute('type')=='text')
+		{
+			els[i].onkeypress = function(e) {
+				if(window.event) // IE
+				{
+					e = window.event;
+				}
+				if (e.keyCode == '13') {
+					refsTB.addcites();
+					return false;
+				}
+			};
+		}
+	}
+}
+
 refsTB.citeWeb = function () {
 	refsTB.oldFormHide();
 	template = "cytuj stronę";
 	var legend = "Cytowanie strony internetowej";
 	newtime = refsTB.getTime();
 	refsTB.numforms++;
-	form = '<div id="citediv'+refsTB.numforms+'">'+
+	var form_el = document.createElement('div');
+	form_el.id = 'citediv'+refsTB.numforms;
+	form_el.innerHTML =
 		'<fieldset><legend>'+legend+'</legend>'+
 		'<table cellspacing="5">'+
 		'<input type="hidden" value="'+template+'" id="template">'+
@@ -178,15 +194,18 @@ refsTB.citeWeb = function () {
 			'<td width="400"><input type="text" style="width:100%" id="refname"></td></tr>'+
 		'</table>'+
 		'<input type="button" value="Dodaj przypis" onClick="refsTB.addcites()">'+
- '</fieldset></div>';
-	 document.getElementById('citeselect').innerHTML += form;
+	'</fieldset>';
+	document.getElementById('citeselect').appendChild(form_el);
+	refsTB.parseCiteForm(form_el.id);
 }
 
 refsTB.citeBook = function () {
 	refsTB.oldFormHide();
 	template = "cytuj książkę";
 	refsTB.numforms++;
-	form = '<div id="citediv'+refsTB.numforms+'">'+
+	var form_el = document.createElement('div');
+	form_el.id = 'citediv'+refsTB.numforms
+	form_el.innerHTML =
 		'<fieldset><legend>Cytowanie wydawnictw zwartych (książek)</legend>'+
 		'<table cellspacing="5">'+
 		'<input type="hidden" value="'+template+'" id="template">'+
@@ -253,16 +272,19 @@ refsTB.citeBook = function () {
 			'<td width="400"><input type="text" style="width:100%" id="oclc"></td></tr>'+
 	'</table>'+
 		'<input type="button" value="Dodaj przypis" onClick="refsTB.addcites()">'+
-	'</fieldset></div>';
-	 document.getElementById('citeselect').innerHTML += form;
-	 createCollapseButtons();
+	'</fieldset>';
+	document.getElementById('citeselect').appendChild(form_el);
+	refsTB.parseCiteForm(form_el.id);
+	createCollapseButtons();
 }
 
 refsTB.citeJournal = function () {
 	refsTB.oldFormHide();
 	template = "cytuj pismo";
 	refsTB.numforms++;
-	form = '<div id="citediv'+refsTB.numforms+'">'+
+	var form_el = document.createElement('div');
+	form_el.id = 'citediv'+refsTB.numforms
+	form_el.innerHTML =
 		'<fieldset><legend>Cytowanie czasopisma, pracy naukowej, itp.</legend>'+
 		'<table cellspacing="5">'+
 		'<input type="hidden" value="'+template+'" id="template">'+
@@ -306,8 +328,9 @@ refsTB.citeJournal = function () {
 			'<td width="400"><input type="text" style="width:100%" id="refname"></td></tr>'+
 		'</table>'+
 		'<input type="button" value="Dodaj przypis" onClick="refsTB.addcites()">'+
- '</fieldset></div>';
-	 document.getElementById('citeselect').innerHTML += form;
+	'</fieldset>';
+	document.getElementById('citeselect').appendChild(form_el);
+	refsTB.parseCiteForm(form_el.id);
 }
 
 refsTB.addcites = function (template) {
@@ -367,18 +390,21 @@ refsTB.getNamedRefs = function (calls) {
 }
 
 refsTB.citeNamedRef = function () {
-	namedrefs = refsTB.getNamedRefs(false);
+	var namedrefs = refsTB.getNamedRefs(false);
+	refsTB.oldFormHide();
+	refsTB.numforms++;
+	var form_el = document.createElement('div');
+	form_el.id = 'citediv'+refsTB.numforms;
 	if (namedrefs == '') {
-		refsTB.oldFormHide();
-		refsTB.numforms++;
-		out = '<div id="citediv'+refsTB.numforms+'"><fieldset>'+
-			'<legend>Przypisy z artykułu</legend>Nie znaleziono żadnych przypisów z przypisanymi nazwami (<tt>&lt;ref name="nazwa"&gt;</tt>)</fieldset></div>';
-		document.getElementById('citeselect').innerHTML += out;
+		form_el.innerHTML =
+			'<fieldset>'+
+			'<legend>Przypisy z artykułu</legend>'+
+			'Nie znaleziono żadnych przypisów z przypisanymi nazwami (<tt>&lt;ref name="nazwa"&gt;</tt>)'+
+			'</fieldset>';
 	}
-	else {
-		refsTB.oldFormHide();
-		refsTB.numforms++;
-		form = '<div id="citediv'+refsTB.numforms+'">'+
+	else
+	{
+		var form =
 			'<fieldset><legend>Przypisy z artykułu</legend>'+
 			'<table cellspacing="5">'+
 			'<tr><td><label for="namedrefs">&nbsp;Nazwane przypisy</label></td>'+
@@ -389,9 +415,10 @@ refsTB.citeNamedRef = function () {
 		form+= '</select>'+
 			'</td></tr></table>'+
 			'<input type="button" value="Dodaj przypis" onClick="refsTB.addnamedcite()">'+
-			'</fieldset></div>';
-		 document.getElementById('citeselect').innerHTML += form;
+			'</fieldset>';
+		form_el.innerHTML = form;
 	}
+	document.getElementById('citeselect').appendChild(form_el);
 }
 
 refsTB.addnamedcite = function () {
@@ -515,7 +542,7 @@ refsTB.errorCheck = function () {
 				}
 				p++;
 			}
-		 skipcheck=false;
+		skipcheck=false;
 		}
 		if (templates) {
 			if (allrefscontent[i].search(/\{\{cytuj/i) == -1 && allrefscontent[i].search(/\{\{cite/i) == -1) {
@@ -556,7 +583,7 @@ refsTB.errorCheck = function () {
 				}
 				z++;
 			}
-		 skipcheck = false;
+			skipcheck = false;
 		}
 	}
 	if (undef) {
@@ -589,7 +616,9 @@ refsTB.errorCheck = function () {
 
 refsTB.dispErrors = function () {
 	refsTB.oldFormHide();
-	form = '<div id="errorform"><fieldset>'+
+	var form_el = document.createElement('div');
+	form_el.id = 'errorform';
+	form_el.innerHTML = '<fieldset>'+
 		'<legend>Sprawdzanie błędów</legend>'+
 		'<b>Sprawdź:</b><br/>'+
 		'<input type="checkbox" id="unclosed" checked="checked" /> Niedomknięte tagi <tt>&lt;ref&gt;</tt><br/>'+
@@ -598,8 +627,8 @@ refsTB.dispErrors = function () {
 		'<input type="checkbox" id="repeated" checked="checked" /> Powtórzone przypisy o tej samej nazwie<br/>'+
 		'<input type="checkbox" id="undef" checked="checked" /> Użycie nazwanych przypisów bez treści/definicji<br/>'+
 		'<input type="button" id="errorchecksubmit" value="Sprawdzenie pod kątem wybranych błędów" onclick="refsTB.doErrorCheck()"/>'+
-		'</fieldset></div>';
-	document.getElementById('citeselect').innerHTML += form;
+		'</fieldset>';
+	document.getElementById('citeselect').appendChild(form_el);
 }
 
 refsTB.doErrorCheck = function () {
@@ -610,24 +639,29 @@ refsTB.doErrorCheck = function () {
 			document.getElementById('citediv'+refsTB.numforms).style.display = 'none';
 		}
 		refsTB.numforms++;
-		out = '<div id="citediv'+refsTB.numforms+'"><fieldset>'+
-			'<legend>Sprawdzanie błędów</legend>Nie znaleziono żadnych błędów.</fieldset></div>';
-		document.getElementById('citeselect').innerHTML += out;
+		var form_el = document.createElement('div');
+		form_el.id = 'citediv'+refsTB.numforms;
+		form_el.innerHTML = '<fieldset>'+
+			'<legend>Sprawdzanie błędów</legend>Nie znaleziono żadnych błędów.</fieldset>';
+		document.getElementById('citeselect').appendChild(form_el);
 	}
 	else {
 		if (refsTB.numforms != 0) {
 			document.getElementById('citediv'+refsTB.numforms).style.display = 'none';
 		}
 		refsTB.numforms++;
-		form = '<div id="citediv'+refsTB.numforms+'">'+
+		var form_el = document.createElement('div');
+		form_el.id = 'citediv'+refsTB.numforms;
+		var form =
 			'<fieldset><legend>Sprawdzanie błędów</legend>'+
 			'<table border="1px">';
 		for (var i=0; i<errors.length; i++) {
 			form+=errors[i];
 		}
 		form+= '</table>'+
-			'</fieldset></div>';
-		 document.getElementById('citeselect').innerHTML += form;
+			'</fieldset>';
+		form_el.innerHTML = form
+		document.getElementById('citeselect').appendChild(form_el);
 	}
 }
 
