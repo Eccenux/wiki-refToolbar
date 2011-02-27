@@ -8,7 +8,7 @@
   Version:
     (see below) = refsTB.version
 \* ------------------------------------------------------------------------ */
-var tmp_refsTB_VERSION = '1.2.1';
+var tmp_refsTB_VERSION = '1.2.2';
 
 //
 // Object Init
@@ -33,7 +33,20 @@ refsTB.version = tmp_refsTB_VERSION;
 //
 // Outer modules
 //
-importScript('Wikipedysta:Nux/sel_t.js');
+$(function()
+{
+	if (typeof(jsAlert)!='function')
+	{
+		var nel = document.createElement("div");
+		nel.style.cssText="position:absolute; width:50%; max-width:500px; background-color:white; border:1px solid black; padding:1em; z-index:10000";
+		nel.innerHTML = tmp_nuxsr_lang['error - jsAlert is undefined'];
+		document.body.insertBefore(nel, document.body.firstChild);
+	}
+	if (typeof(sel_t)!='object')
+	{
+		importScript('MediaWiki:sel_t.js');
+	}
+});
 
 //
 // Attributes
@@ -666,4 +679,4 @@ refsTB.doErrorCheck = function () {
 }
 
 // Note: addOnloadHook will not work for the new toolbar
-hookEvent("load", refsTB.refbuttons);
+$(refsTB.refbuttons);
