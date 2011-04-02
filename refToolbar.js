@@ -31,17 +31,6 @@ var refsTB = new Object();
 refsTB.version = tmp_refsTB_VERSION;
 
 //
-// Outer modules
-//
-$(function()
-{
-	if (typeof(sel_t)!='object')
-	{
-		importScript('MediaWiki:sel_t.js');
-	}
-});
-
-//
 // Attributes
 //
 refsTB.numforms = 0;	// number of forms
