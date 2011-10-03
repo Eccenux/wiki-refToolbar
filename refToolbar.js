@@ -48,7 +48,7 @@ refsTB.refbuttons = function () {
 			button.href = "javascript:refsTB.easyCiteMain()";
 			button.title = "Wstaw szablon cytowania (wer: "+refsTB.version+")";
 			buttonimage = document.createElement('img');
-			buttonimage.src = "http://upload.wikimedia.org/wikipedia/commons/b/bf/Button_easy_cite_pl.png";
+			buttonimage.src = "//upload.wikimedia.org/wikipedia/commons/b/bf/Button_easy_cite_pl.png";
 			buttonimage.alt = "Wstaw szablon przypisu";
 			button.appendChild(buttonimage);
 			document.getElementById('toolbar').appendChild(button);
@@ -56,7 +56,7 @@ refsTB.refbuttons = function () {
 			var advsec = getElementsByClassName(document.getElementById('wikiEditor-ui-toolbar'), "div", "section-advanced")[0];
 			var groupel = getElementsByClassName(advsec, "div", "group-insert")[0];
 			var buttonimage = document.createElement('img');
-			buttonimage.src = "http://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Curly_Brackets_cytuj.svg/22px-Curly_Brackets_cytuj.svg.png";
+			buttonimage.src = "//upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Curly_Brackets_cytuj.svg/22px-Curly_Brackets_cytuj.svg.png";
 			buttonimage.alt = "Wstaw szablon cytowania";
 			buttonimage.title = "Wstaw szablon cytowania (wer: "+refsTB.version+")";
 			buttonimage.className = "tool tool-button";
@@ -484,7 +484,7 @@ refsTB.gotoErrorCode = function (code) {
 	}
 }
 refsTB.gotoErrorCodeHTML = function (code) {
-	var search_icon = 'http://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Crystal_Clear_action_viewmag.png/20px-Crystal_Clear_action_viewmag.png';
+	var search_icon = '//upload.wikimedia.org/wikipedia/commons/thumb/3/33/Crystal_Clear_action_viewmag.png/20px-Crystal_Clear_action_viewmag.png';
 	var el = document.getElementById('wpTextbox1')
 	return '<img'
 		+ ' style="margin:0 .3em; float:right;"'
@@ -529,7 +529,7 @@ refsTB.errorCheck = function () {
 			while (p<allrefs.length && !skipcheck) {
 				if (allrefscontent[i] == allrefscontent[p] && i != p) {
 					errorlist[q] = '<tr><td width="75%"><tt>'+allrefscontent[i]+'</tt>'+refsTB.gotoErrorCodeHTML(allrefs[i].orig_code)+'</td>';
-					errorlist[q] += '<td width="25%">Wiele przypisów posiada tę zawartość. Do tego przypisu powinna zostać przypisana <a target="_blank" href="http://pl.wikipedia.org/wiki/Pomoc:Przypisy#Wielokrotne_u.C5.BCycie_jednego_odno.C5.9Bnika">nazwa</a>.</td></tr>';
+					errorlist[q] += '<td width="25%">Wiele przypisów posiada tę zawartość. Do tego przypisu powinna zostać przypisana <a target="_blank" href="//pl.wikipedia.org/wiki/Pomoc:Przypisy#Wielokrotne_u.C5.BCycie_jednego_odno.C5.9Bnika">nazwa</a>.</td></tr>';
 					q++;
 					samecontentexclude[sx] = allrefscontent[i]
 					sx++;
@@ -570,7 +570,7 @@ refsTB.errorCheck = function () {
 			while (z<namedrefs.length && !skipcheck) {
 				if (namedrefs[k] == namedrefs[z] && k != z) {
 					errorlist[q] = '<tr><td width="75%"><tt>'+namedrefs[k]+'</tt></td>';
-					errorlist[q] += '<td width="25%">Kilka różnych przypisów posiada <a target="_blank" href="http://pl.wikipedia.org/wiki/Pomoc:Przypisy#Wielokrotne_u.C5.BCycie_jednego_odno.C5.9Bnika">tę samą nazwę</a>.</td></tr>';
+					errorlist[q] += '<td width="25%">Kilka różnych przypisów posiada <a target="_blank" href="//pl.wikipedia.org/wiki/Pomoc:Przypisy#Wielokrotne_u.C5.BCycie_jednego_odno.C5.9Bnika">tę samą nazwę</a>.</td></tr>';
 					q++;
 					repeatnameexclude[rx] = namedrefs[z];
 					rx++;
@@ -593,7 +593,7 @@ refsTB.errorCheck = function () {
 			if (!skipcheck) {
 				if (!refsTB.NRcallError(namedrefs, namedrefcalls[p])) {
 					errorlist[q] = '<tr><td width="75%"><tt>'+namedrefcalls[p]+'</tt></td>';
-					errorlist[q] += '<td width="25%">Użyty przypis nie został wcześniej <a target="_blank" href="http://pl.wikipedia.org/wiki/Pomoc:Przypisy#Wielokrotne_u.C5.BCycie_jednego_odno.C5.9Bnika">zdefiniowany</a>.</td></tr>';
+					errorlist[q] += '<td width="25%">Użyty przypis nie został wcześniej <a target="_blank" href="//pl.wikipedia.org/wiki/Pomoc:Przypisy#Wielokrotne_u.C5.BCycie_jednego_odno.C5.9Bnika">zdefiniowany</a>.</td></tr>';
 					q++;
 					undefexclude[ux] = namedrefs[p];
 					ux++;
