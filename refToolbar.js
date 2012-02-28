@@ -8,7 +8,7 @@
   Version:
     (see below) = refsTB.version
 \* ------------------------------------------------------------------------ */
-var tmp_refsTB_VERSION = '1.2.2';
+var tmp_refsTB_VERSION = '1.2.3';
 
 //
 // Object Init
@@ -660,5 +660,9 @@ refsTB.doErrorCheck = function () {
 	}
 }
 
-// Note: addOnloadHook will not work for the new toolbar
-$(refsTB.refbuttons);
+
+mw.loader.using( "mediawiki.legacy.wikibits", function() {
+	hookEvent( 'load', function() {
+		refsTB.refbuttons();
+	} );
+} );
