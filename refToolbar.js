@@ -29,7 +29,7 @@ if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && window.refsTB!=undefi
 
 window.refsTB = {
 	/** Version of the gadget */
-	version: '1.2.4',
+	version: '1.2.5',
 	/** Number of forms */
 	numforms: 0,
 
@@ -38,7 +38,7 @@ window.refsTB = {
 		var that = this;
 
 		toolbarGadget.addButton( {
-			title: 'Wstaw szablon cytowania (wer. ' + that.ver + ')',
+			title: 'Wstaw szablon cytowania (wer. ' + that.version + ')',
 			alt: 'Wstaw szablon cytowania',
 			oldIcon: '//upload.wikimedia.org/wikipedia/commons/b/bf/Button_easy_cite_pl.png',
 			newIcon: '//upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Curly_Brackets_cytuj.svg/22px-Curly_Brackets_cytuj.svg.png',
