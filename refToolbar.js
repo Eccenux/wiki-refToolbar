@@ -1,19 +1,18 @@
 /* ------------------------------------------------------------------------ *\
   Copyright: en:User:Mr.Z-man (en), Wikipedysta:Holek (pl), pl:User:Nux
    Licencja: GFDL oraz CC-BY-SA
- 
+
   Original:
 	http://en.wikipedia.org/wiki/User:Mr.Z-man/refToolbar.js
-	
+
   Version:
     (see below) = refsTB.version
 \* ------------------------------------------------------------------------ */
-var tmp_refsTB_VERSION = '1.2.3';
 
 //
 // Object Init
 //
-if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && refsTB!=undefined)
+if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && window.refsTB!=undefined)
 {
 	alert('Błąd krytyczny - konflikt nazw!'+
 		'\n\n'+
@@ -27,56 +26,59 @@ if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && refsTB!=undefined)
 	}
 
 }
-var refsTB = new Object();
-refsTB.version = tmp_refsTB_VERSION;
 
-//
-// Attributes
-//
-refsTB.numforms = 0;	// number of forms
-//var wikEdAutoUpdateUrl;
+window.refsTB = {
+	/** Version of the gadget */
+	version: '1.2.4',
+	/** Number of forms */
+	numforms: 0,
+
+	/** Sets up the gadget */
+	init: function() {
+		var that = this;
+
+		toolbarGadget.addButton( {
+			title: 'Wstaw szablon cytowania (wer. ' + that.ver + ')',
+			alt: 'Wstaw szablon cytowania',
+			oldIcon: '//upload.wikimedia.org/wikipedia/commons/b/bf/Button_easy_cite_pl.png',
+			newIcon: '//upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Curly_Brackets_cytuj.svg/22px-Curly_Brackets_cytuj.svg.png',
+			onclick: function() {
+				that.easyCiteMain();
+			},
+			section: 'advanced',
+			group: 'insert'
+		} );
+	},
+	/** Shows and hides the form */
+	easyCiteMain: function() {
+		var citemain = document.getElementById( 'citeselect' );
+
+		if ( !citemain ) {
+			// Create the buttons
+			citemain = document.createElement( 'div' );
+			citemain.style.display = 'none';
+			citemain.setAttribute( 'id', 'citeselect' );
+			citemain.appendChild( this.addOption( "refsTB.citeWeb()", "Strona WWW" ) );
+			citemain.appendChild( this.addOption( "refsTB.citeBook()", "Książka" ) );
+			citemain.appendChild( this.addOption( "refsTB.citeJournal()", "Pismo" ) );
+			citemain.appendChild( this.addOption( "refsTB.citeNamedRef()", "Istniejące przypisy" ) );
+			citemain.appendChild( this.addOption( "refsTB.dispErrors()", "Sprawdzenie błędów" ) );
+			citemain.appendChild( this.addOption( "refsTB.hideInitial()", "Anuluj" ) );
+			var txtarea = document.getElementById( 'wpTextbox1' );
+			txtarea.parentNode.insertBefore( citemain, txtarea );
+		}
+		if ( citemain.style.display == 'none' ) {
+			citemain.style.display = '';
+		} else {
+			citemain.style.display = 'none';
+		}
+	}
+};
+
 
 //
 // Methods
 //
-
-// add a button and a buttons toolbar
-refsTB.refbuttons = function () {
-	if (mwCustomEditButtons && (document.getElementById('toolbar') || document.getElementById('wikiEditor-ui-toolbar'))/* && wikEdAutoUpdateUrl == null*/) {
-		if (document.getElementById('toolbar')) {
-			var button = document.createElement('a');
-			button.href = "javascript:refsTB.easyCiteMain()";
-			button.title = "Wstaw szablon cytowania (wer: "+refsTB.version+")";
-			buttonimage = document.createElement('img');
-			buttonimage.src = "//upload.wikimedia.org/wikipedia/commons/b/bf/Button_easy_cite_pl.png";
-			buttonimage.alt = "Wstaw szablon przypisu";
-			button.appendChild(buttonimage);
-			document.getElementById('toolbar').appendChild(button);
-		} else {
-			var advsec = getElementsByClassName(document.getElementById('wikiEditor-ui-toolbar'), "div", "section-advanced")[0];
-			var groupel = getElementsByClassName(advsec, "div", "group-insert")[0];
-			var buttonimage = document.createElement('img');
-			buttonimage.src = "//upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Curly_Brackets_cytuj.svg/22px-Curly_Brackets_cytuj.svg.png";
-			buttonimage.alt = "Wstaw szablon cytowania";
-			buttonimage.title = "Wstaw szablon cytowania (wer: "+refsTB.version+")";
-			buttonimage.className = "tool tool-button";
-			buttonimage.style.cssText = "width: 22px; height: 22px; padding-top:2px";
-			buttonimage.onclick = refsTB.easyCiteMain;
-			groupel.appendChild(buttonimage);
-		}
-		var citemain = document.createElement('div');
-		citemain.style.display = 'none';
-		citemain.setAttribute('id', 'citeselect');
-		citemain.appendChild( refsTB.addOption("refsTB.citeWeb()", "Strona WWW") );
-		citemain.appendChild( refsTB.addOption("refsTB.citeBook()", "Książka") );
-		citemain.appendChild( refsTB.addOption("refsTB.citeJournal()", "Pismo") );
-		citemain.appendChild( refsTB.addOption("refsTB.citeNamedRef()", "Istniejące przypisy") );
-		citemain.appendChild( refsTB.addOption("refsTB.dispErrors()", "Sprawdzenie błędów") );
-		citemain.appendChild( refsTB.addOption("refsTB.hideInitial()", "Anuluj") );
-		var txtarea = document.getElementById('wpTextbox1');
-		txtarea.parentNode.insertBefore(citemain, txtarea);
-	}
-}
 
 refsTB.addOption = function (script, text) {
 	var option = document.createElement('input');
@@ -97,18 +99,6 @@ refsTB.oldFormHide = function () {
 	}
 	if (document.getElementById('errorform') != null) {
 		document.getElementById('citeselect').removeChild(document.getElementById('errorform'));
-	}
-}
-
-refsTB.easyCiteMain = function () {
-	var elBar = document.getElementById('citeselect');
-	if (elBar.style.display == 'none')
-	{
-		elBar.style.display = '';
-	}
-	else
-	{
-		elBar.style.display = 'none';
 	}
 }
 
@@ -421,7 +411,7 @@ refsTB.addnamedcite = function () {
 	ref = '<ref name="'+name+'" />';
 	document.getElementById('wpTextbox1').focus();	// focus first
 	insertTags(ref, '', '');
-	document.getElementById('citediv'+refsTB.numforms).style.display = 'none';	
+	document.getElementById('citediv'+refsTB.numforms).style.display = 'none';
 }
 
 refsTB.getAllRefs = function () {
@@ -554,7 +544,7 @@ refsTB.errorCheck = function () {
 					tx++;
 				}
 				skipcheck = false;
-			}	
+			}
 		}
 	}
 	if (repeated) {
@@ -660,9 +650,4 @@ refsTB.doErrorCheck = function () {
 	}
 }
 
-
-mw.loader.using( "mediawiki.legacy.wikibits", function() {
-	hookEvent( 'load', function() {
-		refsTB.refbuttons();
-	} );
-} );
+refsTB.init();
