@@ -29,7 +29,7 @@ if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && window.refsTB!=undefi
 
 window.refsTB = {
 	/** Version of the gadget */
-	version: '1.2.5',
+	version: '1.2.6',
 	/** Number of forms */
 	numforms: 0,
 
@@ -325,7 +325,7 @@ refsTB.addcites = function (template) {
 	var citeinner = '';
 	for (var i=0; i<cites.length-1; i++) {
 		if (cites[i].value != '' && cites[i].id != "refname" && cites[i].id != "template") {
-			citeinner += "|" + cites[i].id + "=" + cites[i].value;
+			citeinner += " | " + cites[i].id + " = " + cites[i].value;
 		}
 		else if (cites[i].value != '' && cites[i].id == "refname" && cites[i].id != "template") {
 			citebegin += ' name="' + cites[i].value + '"';
