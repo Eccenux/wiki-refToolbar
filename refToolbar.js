@@ -408,7 +408,7 @@ refsTB.citeNamedRef = function () {
 
 refsTB.addnamedcite = function () {
 	name = document.getElementById('citediv'+refsTB.numforms).getElementsByTagName('select')[0].value;
-	ref = '<ref name="'+name+'" />';
+	ref = '{{r|'+name+'}}';
 	document.getElementById('wpTextbox1').focus();	// focus first
 	insertTags(ref, '', '');
 	document.getElementById('citediv'+refsTB.numforms).style.display = 'none';
