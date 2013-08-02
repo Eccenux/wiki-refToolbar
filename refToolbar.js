@@ -139,7 +139,7 @@ refsTB.parseCiteForm = function (form_id) {
 
 refsTB.citeWeb = function () {
 	refsTB.oldFormHide();
-	template = "cytuj stronę";
+	template = "Cytuj stronę";
 	var legend = "Cytowanie strony internetowej";
 	newtime = refsTB.getTime();
 	refsTB.numforms++;
@@ -186,7 +186,7 @@ refsTB.citeWeb = function () {
 
 refsTB.citeBook = function () {
 	refsTB.oldFormHide();
-	template = "cytuj książkę";
+	template = "Cytuj książkę";
 	refsTB.numforms++;
 	var form_el = document.createElement('div');
 	form_el.id = 'citediv'+refsTB.numforms
@@ -265,7 +265,7 @@ refsTB.citeBook = function () {
 
 refsTB.citeJournal = function () {
 	refsTB.oldFormHide();
-	template = "cytuj pismo";
+	template = "Cytuj pismo";
 	refsTB.numforms++;
 	var form_el = document.createElement('div');
 	form_el.id = 'citediv'+refsTB.numforms
