@@ -29,7 +29,7 @@ if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && window.refsTB!=undefi
 
 window.refsTB = {
 	/** Version of the gadget */
-	version: '1.2.6',
+	version: '1.2.7',
 	/** Number of forms */
 	numforms: 0,
 
@@ -177,6 +177,10 @@ refsTB.citeWeb = function () {
 			'<td width="400"><input type="text" style="width:100%" id="data dostępu" value="'+ newtime +'"></td>'+
 		'<td width="120"><label for="refname">&nbsp;Nazwa przypisu: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="refname"></td></tr>'+
+		'<tr><td width="120"><label for="archiwum">&nbsp;Archiwum: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="archiwum"></td>'+
+		'<td width="120"><label for="zarchiwizowano">&nbsp;Data archiwizacji: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="zarchiwizowano"></td></tr>'+
 		'</table>'+
 		'<input type="button" value="Dodaj przypis" onClick="refsTB.addcites()">'+
 	'</fieldset>';
