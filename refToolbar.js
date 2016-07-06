@@ -41,7 +41,7 @@ window.refsTB = {
 			title: 'Wstaw szablon cytowania (wer. ' + that.version + ')',
 			alt: 'Wstaw szablon cytowania',
 			oldIcon: '//upload.wikimedia.org/wikipedia/commons/b/bf/Button_easy_cite_pl.png',
-			newIcon: '//upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Curly_Brackets_cytuj.svg/22px-Curly_Brackets_cytuj.svg.png',
+			newIcon: '//upload.wikimedia.org/wikipedia/commons/thumb/8/82/Bookmark_icon.svg/22px-Bookmark_icon.svg.png',
 			onclick: function() {
 				that.easyCiteMain();
 			},
@@ -478,7 +478,7 @@ refsTB.gotoErrorCode = function (code) {
 	}
 }
 refsTB.gotoErrorCodeHTML = function (code) {
-	var search_icon = '//upload.wikimedia.org/wikipedia/commons/thumb/3/33/Crystal_Clear_action_viewmag.png/20px-Crystal_Clear_action_viewmag.png';
+	var search_icon = '//upload.wikimedia.org/wikipedia/commons/thumb/a/ad/VisualEditor_-_Icon_-_Search-big.svg/20px-VisualEditor_-_Icon_-_Search-big.svg.png';
 	var el = document.getElementById('wpTextbox1')
 	return '<img'
 		+ ' style="margin:0 .3em; float:right;"'
