@@ -40,6 +40,7 @@ window.refsTB = {
 		toolbarGadget.addButton( {
 			title: 'Wstaw szablon cytowania (wer. ' + that.version + ')',
 			alt: 'Wstaw szablon cytowania',
+			add_style: "width: 38px;",
 			oldIcon: '//upload.wikimedia.org/wikipedia/commons/b/bf/Button_easy_cite_pl.png',
 			newIcon: '//upload.wikimedia.org/wikipedia/commons/e/ed/Cytuj.png',
 			onclick: function() {
