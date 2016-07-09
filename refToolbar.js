@@ -41,12 +41,10 @@ window.refsTB = {
 			title: 'Wstaw szablon cytowania (wer. ' + that.version + ')',
 			alt: 'Wstaw szablon cytowania',
 			oldIcon: '//upload.wikimedia.org/wikipedia/commons/b/bf/Button_easy_cite_pl.png',
-			newIcon: '//upload.wikimedia.org/wikipedia/commons/thumb/8/82/Bookmark_icon.svg/22px-Bookmark_icon.svg.png',
+			newIcon: '//upload.wikimedia.org/wikipedia/commons/e/ed/Cytuj.png',
 			onclick: function() {
 				that.easyCiteMain();
-			},
-			section: 'advanced',
-			group: 'insert'
+			}
 		} );
 	},
 	/** Shows and hides the form */
