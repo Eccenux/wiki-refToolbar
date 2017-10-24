@@ -60,6 +60,7 @@ window.refsTB = {
 			citemain.appendChild( this.addOption( "refsTB.citeWeb()", "Strona WWW" ) );
 			citemain.appendChild( this.addOption( "refsTB.citeBook()", "Książka" ) );
 			citemain.appendChild( this.addOption( "refsTB.citeJournal()", "Pismo" ) );
+			citemain.appendChild( this.addOption( "refsTB.citeAnything()", "Uniwersalny" ) );
 			citemain.appendChild( this.addOption( "refsTB.citeNamedRef()", "Istniejące przypisy" ) );
 			citemain.appendChild( this.addOption( "refsTB.dispErrors()", "Sprawdzenie błędów" ) );
 			citemain.appendChild( this.addOption( "refsTB.hideInitial()", "Anuluj" ) );
@@ -319,6 +320,99 @@ refsTB.citeJournal = function () {
 	'</fieldset>';
 	document.getElementById('citeselect').appendChild(form_el);
 	refsTB.parseCiteForm(form_el.id);
+}
+
+refsTB.citeAnything = function () {
+	refsTB.oldFormHide();
+	template = "Cytuj";
+	refsTB.numforms++;
+	var form_el = document.createElement('div');
+	form_el.id = 'citediv'+refsTB.numforms
+	form_el.innerHTML =
+		'<fieldset><legend>Uniwersalne cytowanie wszelkich publikacji</legend>'+
+		'<table cellspacing="5">'+
+		'<input type="hidden" value="'+template+'" id="template">'+
+		'<tr><td width="120"><label for="autor">&nbsp;Autor: </label></td>'+
+			'<td colspan="3"><input type="text" style="width:100%" id="autor" title="Lista autorów w postaci \'Imię Nazwisko\' z opcjonalnym wikilinkiem ([[Imię Nazwisko]])"></td></tr>'+
+		'<tr><td width="120"><label for="tytuł">&nbsp;Tytuł: </label></td>'+
+			'<td colspan="3"><input type="text" style="width:100%" id="tytuł" title="Można stosować zewnętrzny wikilink ([url tytuł]) jeśli cytowana jest strona internetowa, albo wewnętrzny ([[tytuł]]) jeśli publikacja ma oddzielny artykuł"></td></tr>'+
+		'<tr><td width="120"><label for="redaktor">&nbsp;Redaktor: </label></td>'+
+			'<td colspan="3"><input type="text" style="width:100%" id="autor" title="Lista redaktorów w postaci \'Imię Nazwisko\' z opcjonalnym wikilinkiem ([[Imię Nazwisko]])"></td></tr>'+
+		'<tr><td width="120"><label for="czasopismo">&nbsp;Czasopismo: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="czasopismo"></td>'+
+		'<td width="120"><label for="odpowiedzialność">&nbsp;Odpowiedzialność: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="odpowiedzialność"></td></tr>'+
+		'<tr><td width="120"><label for="wolumin">&nbsp;Wolumin/tom: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="wolumin"></td>'+
+		'<td width="120"><label for="numer">&nbsp;Numer: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="numer"></td></tr>'+
+		'<tr><td width="120"><label for="wydanie">&nbsp;Wydanie: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="wydanie"></td>'+
+		'<td width="120"><label for="miejsce">&nbsp;Miejsce wydania: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="wydawca"></td></tr>'+
+		'<tr><td width="120"><label for="wydawca">&nbsp;Wydawca: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="wydawca"></td>'+
+		'<td width="120"><label for="opublikowany">&nbsp;Opublikowany: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="opublikowany"></td></tr>'+
+		'<tr><td width="120"><label for="data">&nbsp;Data publikacji: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="data"></td>'+
+		'<td width="120"><label for="s">&nbsp;Strony, kolumny: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="s"></td></tr>'+
+		'<tr><td width="120"><label for="data dostępu">&nbsp;Data dostępu: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="data dostępu"></td>'+
+		'<td width="120"><label for="opis">&nbsp;Opis: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="opis"></td></tr>'+
+		'<tr><td width="120"><label for="isbn">&nbsp;ISBN: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="issn"></td>'+
+		'<td width="120"><label for="issn">&nbsp;ISSN: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="issn"></td></tr>'+
+		'<tr><td width="120"><label for="oclc">&nbsp;OCLC: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="oclc"></td>'+
+		'<td width="120"><label for="doi">&nbsp;DOI: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="doi"></td></tr>'+
+		'<tr><td width="120"><label for="pmid">&nbsp;PMID: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="pmid"></td>'+
+		'<td width="120"><label for="język">&nbsp;Język: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="język"></td></tr>'+
+		'<tr><td width="120"><label for="refname">&nbsp;Nazwa przypisu: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="refname"></td></tr>'+
+		'<tr><td colspan="5">'+
+	'<table cellspacing="5" class="collapsible collapsed noprint" style="background: transparent; width: 100%; border: 1px solid #dddddd;" cellspacing="0" cellpadding="0">'+
+	'<tr><th colspan="4">Dodatkowe pola</th></tr>'+
+	'<tr><td width="120"><label for="autor r">&nbsp;Autor rozdziału: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="autor r"></td>'+
+		'<td width="120"><label for="rozdział">&nbsp;Rozdział: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="rozdział"></td></tr>'+
+	'<tr><td width="120"><label for="inni">&nbsp;Inni: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="inni"></td>'+
+		'<td width="120"><label for="praca">&nbsp;Praca: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="praca"></td></tr>'+
+	'<tr><td width="120"><label for="pcm">&nbsp;PMC: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="pmc"></td>'+
+		'<td width="120"><label for="bibcode">&nbsp;Bibcode: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="bibcode"></td></tr>'+
+	'<tr><td width="120"><label for="lccn">&nbsp;LCCN: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="lccn"></td>'+
+		'<td width="120"><label for="id">&nbsp;Inny identyfikator: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="id"></td></tr>'+
+	'<tr><td width="120"><label for="archiwum">&nbsp;Archiwum: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="archiwum"></td>'+
+		'<td width="120"><label for="zarchiwizowano">&nbsp;Data archiwizacji: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="zarchiwizowano"></td></tr>'+
+	'<tr><td width="120"><label for="cytat">&nbsp;Cytat: </label></td>'+
+		'<td width="400" colspan="3"><input type="text" style="width:100%" id="cytat"></td></tr>'+
+	'<tr><td width="120"><label for="typ nośnika">&nbsp;Typ nośnika: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="typ nośnika"></td>'+
+		'<td width="120"><label for="odn">&nbsp;Odnośnik: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="odn"></td></tr>'+
+	'</table>'+
+		'</td></tr>'+
+		'</table>'+
+		'<input type="button" value="Dodaj przypis" onClick="refsTB.addcites()">'+
+	'</fieldset>';
+	document.getElementById('citeselect').appendChild(form_el);
+	refsTB.parseCiteForm(form_el.id);
+	createCollapseButtons();
 }
 
 refsTB.addcites = function (template) {
