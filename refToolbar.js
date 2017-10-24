@@ -336,6 +336,8 @@ refsTB.citeAnything = function () {
 			'<td colspan="3"><input type="text" style="width:100%" id="autor" title="Lista autorów w postaci \'Imię Nazwisko\' z opcjonalnym wikilinkiem ([[Imię Nazwisko]])"></td></tr>'+
 		'<tr><td width="120"><label for="tytuł">&nbsp;Tytuł: </label></td>'+
 			'<td colspan="3"><input type="text" style="width:100%" id="tytuł" title="Można stosować zewnętrzny wikilink ([url tytuł]) jeśli cytowana jest strona internetowa, albo wewnętrzny ([[tytuł]]) jeśli publikacja ma oddzielny artykuł"></td></tr>'+
+		'<tr><td width="120"><label for="url">&nbsp;URL: </label></td>'+
+			'<td colspan="3"><input type="text" style="width:100%" id="url"></td></tr>'+
 		'<tr><td width="120"><label for="redaktor">&nbsp;Redaktor: </label></td>'+
 			'<td colspan="3"><input type="text" style="width:100%" id="autor" title="Lista redaktorów w postaci \'Imię Nazwisko\' z opcjonalnym wikilinkiem ([[Imię Nazwisko]])"></td></tr>'+
 		'<tr><td width="120"><label for="czasopismo">&nbsp;Czasopismo: </label></td>'+
