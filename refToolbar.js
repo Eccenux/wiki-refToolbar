@@ -337,9 +337,9 @@ refsTB.citeAnything = function () {
 		'<tr><td width="120"><label for="tytuł">&nbsp;Tytuł: </label></td>'+
 			'<td colspan="3"><input type="text" style="width:100%" id="tytuł" title="Można stosować zewnętrzny wikilink ([url tytuł]) jeśli cytowana jest strona internetowa, albo wewnętrzny ([[tytuł]]) jeśli publikacja ma oddzielny artykuł"></td></tr>'+
 		'<tr><td width="120"><label for="url">&nbsp;URL: </label></td>'+
-			'<td colspan="3"><input type="text" style="width:100%" id="url"></td></tr>'+
-		'<tr><td width="120"><label for="redaktor">&nbsp;Redaktor: </label></td>'+
-			'<td colspan="3"><input type="text" style="width:100%" id="autor" title="Lista redaktorów w postaci \'Imię Nazwisko\' z opcjonalnym wikilinkiem ([[Imię Nazwisko]])"></td></tr>'+
+			'<td width="400"><input type="text" style="width:100%" id="url"></td>'+
+		'<td width="120"><label for="redaktor">&nbsp;Redaktor: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="redaktor" title="Lista redaktorów w postaci \'Imię Nazwisko\' z opcjonalnym wikilinkiem ([[Imię Nazwisko]])"></td></tr>'+
 		'<tr><td width="120"><label for="czasopismo">&nbsp;Czasopismo: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="czasopismo"></td>'+
 		'<td width="120"><label for="odpowiedzialność">&nbsp;Odpowiedzialność: </label></td>'+
@@ -351,7 +351,7 @@ refsTB.citeAnything = function () {
 		'<tr><td width="120"><label for="wydanie">&nbsp;Wydanie: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="wydanie"></td>'+
 		'<td width="120"><label for="miejsce">&nbsp;Miejsce wydania: </label></td>'+
-			'<td width="400"><input type="text" style="width:100%" id="wydawca"></td></tr>'+
+			'<td width="400"><input type="text" style="width:100%" id="miejsce"></td></tr>'+
 		'<tr><td width="120"><label for="wydawca">&nbsp;Wydawca: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="wydawca"></td>'+
 		'<td width="120"><label for="opublikowany">&nbsp;Opublikowany: </label></td>'+
@@ -365,7 +365,7 @@ refsTB.citeAnything = function () {
 		'<td width="120"><label for="opis">&nbsp;Opis: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="opis"></td></tr>'+
 		'<tr><td width="120"><label for="isbn">&nbsp;ISBN: </label></td>'+
-			'<td width="400"><input type="text" style="width:100%" id="issn"></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="isbn"></td>'+
 		'<td width="120"><label for="issn">&nbsp;ISSN: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="issn"></td></tr>'+
 		'<tr><td width="120"><label for="oclc">&nbsp;OCLC: </label></td>'+
