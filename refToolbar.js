@@ -12,7 +12,7 @@
 //
 // Object Init
 //
-if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && window.refsTB!=undefined)
+if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && window.refsTB!==undefined)
 {
 	alert('Błąd krytyczny - konflikt nazw!'+
 		'\n\n'+
@@ -94,10 +94,10 @@ refsTB.hideInitial = function () {
 }
 
 refsTB.oldFormHide = function () {
-	if (refsTB.numforms != 0) {
+	if (refsTB.numforms !== 0) {
 		document.getElementById('citediv'+refsTB.numforms).style.display = 'none';
 	}
-	if (document.getElementById('errorform') != null) {
+	if (document.getElementById('errorform') !== null) {
 		document.getElementById('citeselect').removeChild(document.getElementById('errorform'));
 	}
 }
@@ -435,7 +435,7 @@ refsTB.addcites = function (template) {
 	}
 	cite = citebegin + citename + citeinner + "}}</ref>";
 	document.getElementById('wpTextbox1').focus();	// focus first
-	insertTags(cite, '', '');
+	$('#wpTextbox1').textSelection('encapsulateSelection', {pre: cite});
 	document.getElementById('citediv'+refsTB.numforms).style.display = 'none';
 }
 
@@ -509,7 +509,7 @@ refsTB.addnamedcite = function () {
 	name = document.getElementById('citediv'+refsTB.numforms).getElementsByTagName('select')[0].value;
 	ref = '{{r|'+name+'}}';
 	document.getElementById('wpTextbox1').focus();	// focus first
-	insertTags(ref, '', '');
+	$('#wpTextbox1').textSelection('encapsulateSelection', {pre: ref});
 	document.getElementById('citediv'+refsTB.numforms).style.display = 'none';
 }
 
