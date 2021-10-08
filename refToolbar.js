@@ -8,6 +8,12 @@
   Version:
     (see below) = refsTB.version
 \* ------------------------------------------------------------------------ */
+/* globals $ */
+/* globals sel_t, toolbarGadget */
+/* globals wikEdUseWikEd, WikEdUpdateTextarea */
+/* globals refsTB */
+/* eslint-disable no-useless-escape */
+/* eslint-disable no-redeclare */
 
 //
 // Object Init
@@ -29,7 +35,7 @@ if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && window.refsTB!==undef
 
 window.refsTB = {
 	/** Version of the gadget */
-	version: '1.2.7',
+	version: '1.2.8',
 	/** Number of forms */
 	numforms: 0,
 
@@ -109,7 +115,7 @@ refsTB.getTime = function () {
 	var nowmonth = time.getUTCMonth()+1;
 	if (nowmonth<10) { nowmonth = "0"+ nowmonth.toString(); }
 	var nowyear = time.getUTCFullYear();
-	newtime =	nowyear + '-' + nowmonth + '-' + nowdate;
+	var newtime =	nowyear + '-' + nowmonth + '-' + nowdate;
 	return (newtime);
 }
 
@@ -139,9 +145,9 @@ refsTB.parseCiteForm = function (form_id) {
 
 refsTB.citeWeb = function () {
 	refsTB.oldFormHide();
-	template = "Cytuj stronę";
+	var template = "Cytuj stronę";
 	var legend = "Cytowanie strony internetowej";
-	newtime = refsTB.getTime();
+	var newtime = refsTB.getTime();
 	refsTB.numforms++;
 	var form_el = document.createElement('div');
 	form_el.id = 'citediv'+refsTB.numforms;
@@ -190,7 +196,7 @@ refsTB.citeWeb = function () {
 
 refsTB.citeBook = function () {
 	refsTB.oldFormHide();
-	template = "Cytuj książkę";
+	var template = "Cytuj książkę";
 	refsTB.numforms++;
 	var form_el = document.createElement('div');
 	form_el.id = 'citediv'+refsTB.numforms
@@ -269,7 +275,7 @@ refsTB.citeBook = function () {
 
 refsTB.citeJournal = function () {
 	refsTB.oldFormHide();
-	template = "Cytuj pismo";
+	var template = "Cytuj pismo";
 	refsTB.numforms++;
 	var form_el = document.createElement('div');
 	form_el.id = 'citediv'+refsTB.numforms
@@ -324,7 +330,7 @@ refsTB.citeJournal = function () {
 
 refsTB.citeAnything = function () {
 	refsTB.oldFormHide();
-	template = "Cytuj";
+	var template = "Cytuj";
 	refsTB.numforms++;
 	var form_el = document.createElement('div');
 	form_el.id = 'citediv'+refsTB.numforms
@@ -417,8 +423,8 @@ refsTB.citeAnything = function () {
 	createCollapseButtons();
 }
 
-refsTB.addcites = function (template) {
-	cites = document.getElementById('citediv'+refsTB.numforms).getElementsByTagName('input');
+refsTB.addcites = function () {
+	var cites = document.getElementById('citediv'+refsTB.numforms).getElementsByTagName('input');
 	var citebegin = '<ref';
 	var citename = '';
 	var citeinner = '';
@@ -433,7 +439,7 @@ refsTB.addcites = function (template) {
 			citename = '>{{' + cites[i].value;
 		}
 	}
-	cite = citebegin + citename + citeinner + "}}</ref>";
+	var cite = citebegin + citename + citeinner + "}}</ref>";
 	document.getElementById('wpTextbox1').focus();	// focus first
 	$('#wpTextbox1').textSelection('encapsulateSelection', {pre: cite});
 	document.getElementById('citediv'+refsTB.numforms).style.display = 'none';
@@ -445,7 +451,7 @@ refsTB.getNamedRefs = function (calls) {
 			WikEdUpdateTextarea();
 		}
 	}
-	text = document.getElementById('wpTextbox1').value;
+	var text = document.getElementById('wpTextbox1').value;
 	var regex;
 	if (calls) {
 		regex = /< *?ref +?name *?= *?(('([^']*?)')|("([^"]*?)")|([^'"\s]*?[^\/]\b)) *?\/ *?>/gi //'
@@ -456,7 +462,7 @@ refsTB.getNamedRefs = function (calls) {
 	var i=0;
 	var nr=true;
 	do {
-		ref = regex.exec(text);
+		var ref = regex.exec(text);
 		if(ref != null){
 			if (ref[5]) {
 				namedrefs[i] = ref[5];
@@ -506,11 +512,18 @@ refsTB.citeNamedRef = function () {
 }
 
 refsTB.addnamedcite = function () {
-	name = document.getElementById('citediv'+refsTB.numforms).getElementsByTagName('select')[0].value;
-	ref = '{{r|'+name+'}}';
-	document.getElementById('wpTextbox1').focus();	// focus first
-	$('#wpTextbox1').textSelection('encapsulateSelection', {pre: ref});
-	document.getElementById('citediv'+refsTB.numforms).style.display = 'none';
+	var citeform = document.getElementById('citediv'+refsTB.numforms);
+	var name = citeform.getElementsByTagName('select')[0].value;
+	var ref;
+	var $textbox = $('#wpTextbox1');
+	if ($textbox.val().search(/\{\{[rR]\|/) >= 0) {
+		ref = '{{r|'+name+'}}';
+	} else {
+		ref = '<ref name="'+name+'" />';
+	}
+	$textbox.focus();	// focus first
+	$textbox.textSelection('encapsulateSelection', {pre: ref});
+	citeform.style.display = 'none';
 }
 
 refsTB.getAllRefs = function () {
@@ -519,13 +532,13 @@ refsTB.getAllRefs = function () {
 			WikEdUpdateTextarea();
 		}
 	}
-	text = document.getElementById('wpTextbox1').value;
-	regex = /< *?ref( +?name *?= *?(('([^']*?)')|("([^"]*?)")|([^'"\s]*?[^\/]\b)))? *?>((.|\n)*?)< *?\/? *?ref *?>/gim //"
+	var text = document.getElementById('wpTextbox1').value;
+	var regex = /< *?ref( +?name *?= *?(('([^']*?)')|("([^"]*?)")|([^'"\s]*?[^\/]\b)))? *?>((.|\n)*?)< *?\/? *?ref *?>/gim //"
 	var allrefs = new Array();
 	var i=0;
 	var nr=true;
 	do {
-		ref = regex.exec(text);
+		var ref = regex.exec(text);
 		if(ref != null){
 			var orig_code = ref[0];
 			if (ref[0].search(/[^\s]{150}/) != -1) {
@@ -558,7 +571,7 @@ refsTB.gotoErrorCode = function (code) {
 	// already selected? => get next
 	if (sel_t.getSelStr(input, false)==code)
 	{
-		sel_pos = sel_t.getSelBound(input);
+		var sel_pos = sel_t.getSelBound(input);
 		pos = input.value.indexOf(code, sel_pos.start+1);
 	}
 	// not selected yet or last found => get first
@@ -574,7 +587,6 @@ refsTB.gotoErrorCode = function (code) {
 }
 refsTB.gotoErrorCodeHTML = function (code) {
 	var search_icon = '//upload.wikimedia.org/wikipedia/commons/thumb/a/ad/VisualEditor_-_Icon_-_Search-big.svg/20px-VisualEditor_-_Icon_-_Search-big.svg.png';
-	var el = document.getElementById('wpTextbox1')
 	return '<img'
 		+ ' style="margin:0 .3em; float:right;"'
 		+ ' src="'+search_icon+'" alt="szukaj"'
@@ -597,11 +609,11 @@ refsTB.errorCheck = function () {
 	var namedrefs = refsTB.getNamedRefs(false);
 	var errorlist = new Array();
 	var q=0;
-	unclosed = document.getElementById('unclosed').checked;
-	samecontent = document.getElementById('samecontent').checked;
-	templates = document.getElementById('templates').checked;
-	repeated = document.getElementById('repeated').checked;
-	undef = document.getElementById('undef').checked;
+	var unclosed = document.getElementById('unclosed').checked;
+	var samecontent = document.getElementById('samecontent').checked;
+	var templates = document.getElementById('templates').checked;
+	var repeated = document.getElementById('repeated').checked;
+	var undef = document.getElementById('undef').checked;
 	for (var i=0; i<allrefs.length; i++) {
 		if (allrefs[i].code.search(/&lt; *?\/ *?ref *?&gt;/) == -1 && unclosed) {
 			errorlist[q] = '<tr><td width="75%"><tt>'+allrefs[i].code+'</tt>'+refsTB.gotoErrorCodeHTML(allrefs[i].orig_code)+'</td>';
@@ -626,7 +638,7 @@ refsTB.errorCheck = function () {
 				}
 				p++;
 			}
-		skipcheck=false;
+			skipcheck=false;
 		}
 		if (templates) {
 			if (allrefscontent[i].search(/\{\{cytuj/i) == -1 && allrefscontent[i].search(/\{\{cite/i) == -1) {
@@ -690,7 +702,7 @@ refsTB.errorCheck = function () {
 			}
 			skipcheck = false;
 		}
- }
+	}
 	if (q > 0) {
 		return errorlist;
 	} else {
