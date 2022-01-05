@@ -360,7 +360,7 @@ refsTB.citeAnything = function () {
 			'<td width="400"><input type="text" style="width:100%" id="miejsce"></td></tr>'+
 		'<tr><td width="120"><label for="wydawca">&nbsp;Wydawca: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="wydawca"></td>'+
-		'<td width="120"><label for="opublikowany">&nbsp;Opublikowany: </label></td>'+
+		'<td width="120"><label for="opublikowany">&nbsp;Opublikowany <small>(www)</small>: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="opublikowany"></td></tr>'+
 		'<tr><td width="120"><label for="data">&nbsp;Data publikacji: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="data"></td>'+
@@ -393,7 +393,7 @@ refsTB.citeAnything = function () {
 			'<td width="400"><input type="text" style="width:100%" id="rozdział"></td></tr>'+
 	'<tr><td width="120"><label for="inni">&nbsp;Inni: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="inni"></td>'+
-		'<td width="120"><label for="praca">&nbsp;Praca: </label></td>'+
+		'<td width="120"><label for="praca">&nbsp;Praca <small>(www)</small>: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="praca"></td></tr>'+
 	'<tr><td width="120"><label for="pcm">&nbsp;PMC: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="pmc"></td>'+
