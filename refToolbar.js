@@ -35,7 +35,7 @@ if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && window.refsTB!==undef
 
 window.refsTB = {
 	/** Version of the gadget */
-	version: '1.2.8',
+	version: '1.2.9',
 	/** Number of forms */
 	numforms: 0,
 
@@ -70,8 +70,13 @@ window.refsTB = {
 			citemain.appendChild( this.addOption( "refsTB.citeNamedRef()", "Istniejące przypisy" ) );
 			citemain.appendChild( this.addOption( "refsTB.dispErrors()", "Sprawdzenie błędów" ) );
 			citemain.appendChild( this.addOption( "refsTB.hideInitial()", "Anuluj" ) );
-			var txtarea = document.getElementById( 'wpTextbox1' );
-			txtarea.parentNode.insertBefore( citemain, txtarea );
+			var topEditor = document.querySelector('.wikiEditor-ui-top');
+			if (topEditor instanceof Element) {
+				topEditor.appendChild(citemain);
+			} else {
+				var txtarea = document.getElementById( 'wpTextbox1' );
+				txtarea.parentNode.insertBefore( citemain, txtarea );
+			}
 		}
 		if ( citemain.style.display == 'none' ) {
 			citemain.style.display = '';
