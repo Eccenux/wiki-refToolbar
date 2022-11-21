@@ -35,7 +35,7 @@ if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && window.refsTB!==undef
 
 window.refsTB = {
 	/** Version of the gadget */
-	version: '1.2.9',
+	version: '1.2.10',
 	/** Number of forms */
 	numforms: 0,
 
@@ -214,9 +214,13 @@ refsTB.citeBook = function () {
 		'<td width="120"><label for="imię">&nbsp;Imię: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="imię"></td></tr>'+
 		'<tr><td width="120"><label for="autor">&nbsp;Autor: </label></td>'+
-			'<td width="400"><input type="text" style="width:100%" id="autor"></td></tr>'+
+			'<td width="400"><input type="text" style="width:100%" id="autor"></td>'+
+		'<td width="120"><label for="autor link">&nbsp;Artykuł o autorze: </label></td>'+
+			'<td width="400" title="Nazwa artykułu w Wikipedii omawiającego tę osobę."><input type="text" style="width:100%" id="autor link"></td></tr>'+
 		'<tr><td width="120"><label for="tytuł">&nbsp;Tytuł: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="tytuł"></td>'+
+		'<td width="120"><label for="wydanie">&nbsp;Wydanie: </label></td>'+
+			'<td width="400" title="Cytowane wydanie. Używane, jeżeli nie była to pierwsza publikacja książki."><input type="text" style="width:100%" id="wydanie"></td></tr>'+
 		'<tr><td width="120"><label for="wydawca">&nbsp;Wydawnictwo: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="wydawca"></td>'+
 		'<td width="120"><label for="miejsce">&nbsp;Miejsce wydania: </label></td>'+
@@ -227,6 +231,8 @@ refsTB.citeBook = function () {
 			'<td width="400"><input type="text" style="width:100%" id="seria"></td></tr>'+
 		'<tr><td width="120"><label for="strony">&nbsp;Strony: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="strony"></td>'+
+		'<td width="120"><label for="kolumny">&nbsp;Kolumny: </label></td>'+
+			'<td width="400" title="Dla publikacji, które mają wiele szpalt (kolumn)."><input type="text" style="width:100%" id="kolumny"></td></tr>'+
 		'<tr><td width="120"><label for="isbn">&nbsp;ISBN: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="isbn"></td>'+
 		'<td width="120"><label for="refname">&nbsp;Nazwa przypisu: </label></td>'+
