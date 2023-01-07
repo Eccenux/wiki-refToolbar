@@ -113,6 +113,7 @@ refsTB.oldFormHide = function () {
 	}
 }
 
+/** Get current date in ISO format */
 refsTB.getTime = function () {
 	var time = new Date();
 	var nowdate = time.getUTCDate();
@@ -152,7 +153,6 @@ refsTB.citeWeb = function () {
 	refsTB.oldFormHide();
 	var template = "Cytuj stronę";
 	var legend = "Cytowanie strony internetowej";
-	var newtime = refsTB.getTime();
 	refsTB.numforms++;
 	var form_el = document.createElement('div');
 	form_el.id = 'citediv'+refsTB.numforms;
@@ -185,7 +185,7 @@ refsTB.citeWeb = function () {
 		'<td width="120"><label for="język">&nbsp;Język: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="język"></td></tr>'+
 		'<tr><td width="120"><label for="data dostępu">&nbsp;Data dostępu: </label></td>'+
-			'<td width="400"><input type="text" style="width:100%" id="data dostępu" value="'+ newtime +'"></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="data dostępu" value="'+ refsTB.getTime() +'"></td>'+
 		'<td width="120"><label for="refname">&nbsp;Nazwa przypisu: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="refname"></td></tr>'+
 		'<tr><td width="120"><label for="archiwum">&nbsp;Archiwum: </label></td>'+
@@ -271,7 +271,7 @@ refsTB.citeBook = function () {
 		'<tr><td width="120"><label for="url">&nbsp;DOI: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="doi"></td>'+
 		'<td width="120"><label for="data dostępu">&nbsp;Data dostępu: </label></td>'+
-			'<td width="400"><input type="text" style="width:100%" id="data dostępu"></td></tr>'+
+			'<td width="400"><input type="text" style="width:100%" id="data dostępu" value="'+ refsTB.getTime() +'"></td></tr>'+
 		'<tr><td width="120"><label for="url">&nbsp;URL: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="url"></td>'+
 		'<td width="120"><label for="oclc">&nbsp;OCLC: </label></td>'+
@@ -378,7 +378,7 @@ refsTB.citeAnything = function () {
 		'<td width="120"><label for="s">&nbsp;Strony, kolumny: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="s"></td></tr>'+
 		'<tr><td width="120"><label for="data dostępu">&nbsp;Data dostępu: </label></td>'+
-			'<td width="400"><input type="text" style="width:100%" id="data dostępu"></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="data dostępu" value="'+ refsTB.getTime() +'"></td>'+
 		'<td width="120"><label for="opis">&nbsp;Opis: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="opis"></td></tr>'+
 		'<tr><td width="120"><label for="isbn">&nbsp;ISBN: </label></td>'+
