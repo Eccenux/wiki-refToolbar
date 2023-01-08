@@ -10,6 +10,7 @@
 \* ------------------------------------------------------------------------ */
 /* globals $ */
 /* globals sel_t, toolbarGadget */
+/* globals createCollapseButtons */
 /* globals wikEdUseWikEd, WikEdUpdateTextarea */
 /* globals refsTB */
 /* eslint-disable no-useless-escape */
@@ -35,7 +36,7 @@ if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && window.refsTB!==undef
 
 window.refsTB = {
 	/** Version of the gadget */
-	version: '1.2.10',
+	version: '1.3.0',
 	/** Number of forms */
 	numforms: 0,
 
@@ -161,9 +162,9 @@ refsTB.citeWeb = function () {
 		'<table cellspacing="5">'+
 		'<input type="hidden" value="'+template+'" id="template">'+
 		'<tr><td width="120"><label for="url">&nbsp;URL: </label></td>'+
-			'<td width="400"><input type="text" style="width:100%" id="url"></td>'+
+			'<td width="400"><input type="url" style="width:100%" id="url" required></td>'+
 		'<td width="120"><label for="tytuł">&nbsp;Tytuł: </label></td>'+
-			'<td width="400"><input type="text" style="width:100%" id="tytuł"></td></tr>'+
+			'<td width="400"><input type="text" style="width:100%" id="tytuł" required></td></tr>'+
 		'<tr><td width="120"><label for="nazwisko">&nbsp;Nazwisko: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="nazwisko"></td>'+
 		'<td width="120"><label for="imię">&nbsp;Imię: </label></td>'+
@@ -189,7 +190,7 @@ refsTB.citeWeb = function () {
 		'<td width="120"><label for="refname">&nbsp;Nazwa przypisu: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="refname"></td></tr>'+
 		'<tr><td width="120"><label for="archiwum">&nbsp;Archiwum: </label></td>'+
-			'<td width="400"><input type="text" style="width:100%" id="archiwum"></td>'+
+			'<td width="400"><input type="url" style="width:100%" id="archiwum"></td>'+
 		'<td width="120"><label for="zarchiwizowano">&nbsp;Data archiwizacji: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="zarchiwizowano"></td></tr>'+
 		'</table>'+
@@ -218,7 +219,7 @@ refsTB.citeBook = function () {
 		'<td width="120"><label for="autor link">&nbsp;Artykuł o autorze: </label></td>'+
 			'<td width="400" title="Nazwa artykułu w Wikipedii omawiającego tę osobę."><input type="text" style="width:100%" id="autor link"></td></tr>'+
 		'<tr><td width="120"><label for="tytuł">&nbsp;Tytuł: </label></td>'+
-			'<td width="400"><input type="text" style="width:100%" id="tytuł"></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="tytuł" required></td>'+
 		'<td width="120"><label for="wydanie">&nbsp;Wydanie: </label></td>'+
 			'<td width="400" title="Cytowane wydanie. Używane, jeżeli nie była to pierwsza publikacja książki."><input type="text" style="width:100%" id="wydanie"></td></tr>'+
 		'<tr><td width="120"><label for="wydawca">&nbsp;Wydawnictwo: </label></td>'+
@@ -273,7 +274,7 @@ refsTB.citeBook = function () {
 		'<td width="120"><label for="data dostępu">&nbsp;Data dostępu: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="data dostępu" value="'+ refsTB.getTime() +'"></td></tr>'+
 		'<tr><td width="120"><label for="url">&nbsp;URL: </label></td>'+
-			'<td width="400"><input type="text" style="width:100%" id="url"></td>'+
+			'<td width="400"><input type="url" style="width:100%" id="url"></td>'+
 		'<td width="120"><label for="oclc">&nbsp;OCLC: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="oclc"></td></tr>'+
 	'</table>'+
@@ -305,9 +306,9 @@ refsTB.citeJournal = function () {
 		'<tr><td width="120"><label for="autor">&nbsp;Autor: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="autor"></td></tr>'+
 		'<tr><td width="120"><label for="tytuł">&nbsp;Tytuł: </label></td>'+
-			'<td width="400"><input type="text" style="width:100%" id="tytuł"></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="tytuł" required></td>'+
 		'<td width="120"><label for="czasopismo">&nbsp;Czasopismo: </label></td>'+
-			'<td width="400"><input type="text" style="width:100%" id="czasopismo"></td></tr>'+
+			'<td width="400"><input type="text" style="width:100%" id="czasopismo" required></td></tr>'+
 		'<tr><td width="120"><label for="wydawca">&nbsp;Wydawca: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="wydawca"></td>'+
 		'<td width="120"><label for="odpowiedzialność">&nbsp;Odpowiedzialność: </label></td>'+
@@ -327,7 +328,7 @@ refsTB.citeJournal = function () {
 		'<tr><td width="120"><label for="data">&nbsp;Data publikacji: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="data"></td>'+
 		'<td width="120"><label for="url">&nbsp;URL: </label></td>'+
-			'<td width="400"><input type="text" style="width:100%" id="url"></td>'+
+			'<td width="400"><input type="url" style="width:100%" id="url"></td>'+
 		'<tr><td width="120"><label for="url">&nbsp;DOI: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="doi"></td>'+
 		'<td width="120"><label for="refname">&nbsp;Nazwa przypisu: </label></td>'+
@@ -352,9 +353,9 @@ refsTB.citeAnything = function () {
 		'<tr><td width="120"><label for="autor">&nbsp;Autor: </label></td>'+
 			'<td colspan="3"><input type="text" style="width:100%" id="autor" title="Lista autorów w postaci \'Imię Nazwisko\' z opcjonalnym wikilinkiem ([[Imię Nazwisko]])"></td></tr>'+
 		'<tr><td width="120"><label for="tytuł">&nbsp;Tytuł: </label></td>'+
-			'<td colspan="3"><input type="text" style="width:100%" id="tytuł" title="Można stosować zewnętrzny wikilink ([url tytuł]) jeśli cytowana jest strona internetowa, albo wewnętrzny ([[tytuł]]) jeśli publikacja ma oddzielny artykuł"></td></tr>'+
+			'<td colspan="3"><input type="text" style="width:100%" id="tytuł" required title="Można stosować zewnętrzny wikilink ([url tytuł]) jeśli cytowana jest strona internetowa, albo wewnętrzny ([[tytuł]]) jeśli publikacja ma oddzielny artykuł"></td></tr>'+
 		'<tr><td width="120"><label for="url">&nbsp;URL: </label></td>'+
-			'<td width="400"><input type="text" style="width:100%" id="url"></td>'+
+			'<td width="400"><input type="url" style="width:100%" id="url"></td>'+
 		'<td width="120"><label for="redaktor">&nbsp;Redaktor: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="redaktor" title="Lista redaktorów w postaci \'Imię Nazwisko\' z opcjonalnym wikilinkiem ([[Imię Nazwisko]])"></td></tr>'+
 		'<tr><td width="120"><label for="czasopismo">&nbsp;Czasopismo: </label></td>'+
@@ -415,7 +416,7 @@ refsTB.citeAnything = function () {
 		'<td width="120"><label for="id">&nbsp;Inny identyfikator: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="id"></td></tr>'+
 	'<tr><td width="120"><label for="archiwum">&nbsp;Archiwum: </label></td>'+
-			'<td width="400"><input type="text" style="width:100%" id="archiwum"></td>'+
+			'<td width="400"><input type="url" style="width:100%" id="archiwum"></td>'+
 		'<td width="120"><label for="zarchiwizowano">&nbsp;Data archiwizacji: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="zarchiwizowano"></td></tr>'+
 	'<tr><td width="120"><label for="cytat">&nbsp;Cytat: </label></td>'+
@@ -434,20 +435,44 @@ refsTB.citeAnything = function () {
 	createCollapseButtons();
 }
 
+/** Add single ref. */
 refsTB.addcites = function () {
 	var cites = document.getElementById('citediv'+refsTB.numforms).getElementsByTagName('input');
+	
+	// to key:value map
+	var values = {};
+	for (var i=0; i<cites.length-1; i++) {
+		if (cites[i].value == '') {
+			continue;
+		}
+		values[cites[i].id] = cites[i].value;
+	}
+
+	// filter invalid
+	if (!('url' in values) && 'data dostępu' in values) {
+		delete values['data dostępu'];
+	}
+
+	// create ref
 	var citebegin = '<ref';
 	var citename = '';
 	var citeinner = '';
-	for (var i=0; i<cites.length-1; i++) {
-		if (cites[i].value != '' && cites[i].id != "refname" && cites[i].id != "template") {
-			citeinner += " | " + cites[i].id + " = " + cites[i].value;
+	for (var id in values) {
+		if (!Object.hasOwnProperty.call(values, id)) {
+			continue
 		}
-		else if (cites[i].value != '' && cites[i].id == "refname" && cites[i].id != "template") {
-			citebegin += ' name="' + cites[i].value + '"';
-		}
-		else if (cites[i].value != '' && cites[i].id != "refname" && cites[i].id == "template") {
-			citename = '>{{' + cites[i].value;
+		var value = values[id];
+
+		switch (id) {
+			case 'refname':
+				citebegin += ' name="' + value + '"';
+				break;
+			case 'template':
+				citename = '>{{' + value;
+				break;
+			default:
+				citeinner += " | " + id + " = " + value;
+				break;
 		}
 	}
 	var cite = citebegin + citename + citeinner + "}}</ref>";
