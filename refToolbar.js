@@ -36,7 +36,7 @@ if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && window.refsTB!==undef
 
 window.refsTB = {
 	/** Version of the gadget */
-	version: '1.3.1',
+	version: '1.3.2',
 	/** Number of forms */
 	numforms: 0,
 
@@ -80,10 +80,10 @@ window.refsTB = {
 			}
 		}
 		if ( citemain.style.display == 'none' ) {
-			$('#citeselect fieldset [disabled]').each(function(){$(this).removeAttr('disabled')})
+			$('#citeselect fieldset [disabled]').each(function(){$(this).removeAttr('disabled')});
 			citemain.style.display = '';
 		} else {
-			$('#citeselect fieldset :invalid').each(function(){$(this).attr('disabled', 'true')})
+			$('#citeselect fieldset :invalid').each(function(){$(this).attr('disabled', 'true')});
 			citemain.style.display = 'none';
 		}
 	}
@@ -104,6 +104,7 @@ refsTB.addOption = function (script, text) {
 
 refsTB.hideInitial = function () {
 	document.getElementById('citeselect').style.display = 'none';
+	$('#citeselect fieldset :invalid').each(function(){$(this).attr('disabled', 'true')});
 	refsTB.oldFormHide();
 }
 
