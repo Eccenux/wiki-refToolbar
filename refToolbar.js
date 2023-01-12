@@ -36,7 +36,7 @@ if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && window.refsTB!==undef
 
 window.refsTB = {
 	/** Version of the gadget */
-	version: '1.3.2',
+	version: '1.3.3',
 	/** Number of forms */
 	numforms: 0,
 
@@ -190,8 +190,8 @@ refsTB.citeWeb = function () {
 			'<td width="400"><input type="text" style="width:100%" id="język"></td></tr>'+
 		'<tr><td width="120"><label for="data dostępu">&nbsp;Data dostępu: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="data dostępu" value="'+ refsTB.getTime() +'"></td>'+
-		'<td width="120"><label for="refname">&nbsp;Nazwa przypisu: </label></td>'+
-			'<td width="400"><input type="text" style="width:100%" id="refname"></td></tr>'+
+		'<td width="120"><label for="refname">&nbsp;Nazwa przypisu<sup>*</sup>: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="refname" placeholder="wpisz * aby wstawić szablon bez znaczników &lt;ref&gt;"></td></tr>'+
 		'<tr><td width="120"><label for="archiwum">&nbsp;Archiwum: </label></td>'+
 			'<td width="400"><input type="url" style="width:100%" id="archiwum"></td>'+
 		'<td width="120"><label for="zarchiwizowano">&nbsp;Data archiwizacji: </label></td>'+
@@ -239,8 +239,8 @@ refsTB.citeBook = function () {
 			'<td width="400" title="Dla publikacji, które mają wiele szpalt (kolumn)."><input type="text" style="width:100%" id="kolumny"></td></tr>'+
 		'<tr><td width="120"><label for="isbn">&nbsp;ISBN: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="isbn"></td>'+
-		'<td width="120"><label for="refname">&nbsp;Nazwa przypisu: </label></td>'+
-			'<td width="400"><input type="text" style="width:100%" id="refname"></td></tr>'+
+		'<td width="120"><label for="refname">&nbsp;Nazwa przypisu<sup>*</sup>: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="refname" placeholder="wpisz * aby wstawić szablon bez znaczników &lt;ref&gt;"></td></tr>'+
 		'</table>'+
 	'<table cellspacing="5" class="collapsible collapsed noprint" style="background: transparent; width: 100%; border: 1px solid #dddddd;" cellspacing="0" cellpadding="0">'+
 	'<tr><th colspan="4">Dodatkowe pola</th></tr>'+
@@ -334,8 +334,8 @@ refsTB.citeJournal = function () {
 			'<td width="400"><input type="url" style="width:100%" id="url"></td>'+
 		'<tr><td width="120"><label for="url">&nbsp;DOI: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="doi"></td>'+
-		'<td width="120"><label for="refname">&nbsp;Nazwa przypisu: </label></td>'+
-			'<td width="400"><input type="text" style="width:100%" id="refname"></td></tr>'+
+		'<td width="120"><label for="refname">&nbsp;Nazwa przypisu<sup>*</sup>: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="refname" placeholder="wpisz * aby wstawić szablon bez znaczników &lt;ref&gt;"></td></tr>'+
 		'</table>'+
 		'<input type="button" value="Dodaj przypis" onClick="refsTB.addcites()">'+
 	'</fieldset>';
@@ -397,8 +397,8 @@ refsTB.citeAnything = function () {
 			'<td width="400"><input type="text" style="width:100%" id="pmid"></td>'+
 		'<td width="120"><label for="język">&nbsp;Język: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="język"></td></tr>'+
-		'<tr><td width="120"><label for="refname">&nbsp;Nazwa przypisu: </label></td>'+
-			'<td width="400"><input type="text" style="width:100%" id="refname"></td></tr>'+
+		'<tr><td width="120"><label for="refname">&nbsp;Nazwa przypisu<sup>*</sup>: </label></td>'+
+			'<td width="400"><input type="text" style="width:100%" id="refname" placeholder="wpisz * aby wstawić szablon bez znaczników &lt;ref&gt;"></td></tr>'+
 		'<tr><td colspan="5">'+
 	'<table cellspacing="5" class="collapsible collapsed noprint" style="background: transparent; width: 100%; border: 1px solid #dddddd;" cellspacing="0" cellpadding="0">'+
 	'<tr><th colspan="4">Dodatkowe pola</th></tr>'+
@@ -459,7 +459,9 @@ refsTB.addcites = function () {
 	// create ref
 	var citebegin = '<ref';
 	var citename = '';
+	var citeclose = '>';
 	var citeinner = '';
+	var citeend = '</ref>';
 	for (var id in values) {
 		if (!Object.hasOwnProperty.call(values, id)) {
 			continue
@@ -468,17 +470,23 @@ refsTB.addcites = function () {
 
 		switch (id) {
 			case 'refname':
-				citebegin += ' name="' + value + '"';
+				if (value == '*') {
+					citebegin = '';
+					citeclose = '* ';
+					citeend = '';
+				} else {
+					citebegin += ' name="' + value + '"';
+				}
 				break;
 			case 'template':
-				citename = '>{{' + value;
+				citename = '{{' + value;
 				break;
 			default:
 				citeinner += " | " + id + " = " + value;
 				break;
 		}
 	}
-	var cite = citebegin + citename + citeinner + "}}</ref>";
+	var cite = citebegin + citeclose + citename + citeinner + "}}" + citeend;
 	document.getElementById('wpTextbox1').focus();	// focus first
 	$('#wpTextbox1').textSelection('encapsulateSelection', {pre: cite});
 	document.getElementById('citediv'+refsTB.numforms).style.display = 'none';
