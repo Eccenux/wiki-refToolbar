@@ -36,7 +36,7 @@ if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && window.refsTB!==undef
 
 window.refsTB = {
 	/** Version of the gadget */
-	version: '1.3.3',
+	version: '1.3.4',
 	/** Number of forms */
 	numforms: 0,
 
@@ -80,11 +80,9 @@ window.refsTB = {
 			}
 		}
 		if ( citemain.style.display == 'none' ) {
-			$('#citeselect fieldset [disabled]').each(function(){$(this).removeAttr('disabled')});
-			citemain.style.display = '';
+			refsTB.citeMainShow();
 		} else {
-			$('#citeselect fieldset :invalid').each(function(){$(this).attr('disabled', 'true')});
-			citemain.style.display = 'none';
+			refsTB.citeMainHide();
 		}
 	}
 };
@@ -93,6 +91,24 @@ window.refsTB = {
 //
 // Methods
 //
+/** Show main panel. */
+refsTB.citeMainShow = function () {
+	var citemain = document.getElementById('citeselect');
+	$('fieldset [disabled]', citemain).each(function(){$(this).removeAttr('disabled')});
+	citemain.style.display = '';
+}
+/** Hide main panel. */
+refsTB.citeMainHide = function () {
+	var citemain = document.getElementById('citeselect');
+	citemain.style.display = 'none';
+	$('fieldset :invalid', citemain).each(function(){$(this).attr('disabled', 'true')});
+}
+/** Hide just the current form. */
+refsTB.citeCurrentHide = function () {
+	var form = document.getElementById('citediv'+refsTB.numforms);
+	form.style.display = 'none';
+	$(':invalid', form).each(function(){$(this).attr('disabled', 'true')});
+}
 
 refsTB.addOption = function (script, text) {
 	var option = document.createElement('input');
@@ -103,14 +119,13 @@ refsTB.addOption = function (script, text) {
 }
 
 refsTB.hideInitial = function () {
-	document.getElementById('citeselect').style.display = 'none';
-	$('#citeselect fieldset :invalid').each(function(){$(this).attr('disabled', 'true')});
+	refsTB.citeMainHide();
 	refsTB.oldFormHide();
 }
 
 refsTB.oldFormHide = function () {
 	if (refsTB.numforms !== 0) {
-		document.getElementById('citediv'+refsTB.numforms).style.display = 'none';
+		refsTB.citeCurrentHide();
 	}
 	if (document.getElementById('errorform') !== null) {
 		document.getElementById('citeselect').removeChild(document.getElementById('errorform'));
@@ -489,7 +504,7 @@ refsTB.addcites = function () {
 	var cite = citebegin + citeclose + citename + citeinner + "}}" + citeend;
 	document.getElementById('wpTextbox1').focus();	// focus first
 	$('#wpTextbox1').textSelection('encapsulateSelection', {pre: cite});
-	document.getElementById('citediv'+refsTB.numforms).style.display = 'none';
+	refsTB.citeCurrentHide();
 }
 
 refsTB.getNamedRefs = function (calls) {
@@ -570,7 +585,7 @@ refsTB.addnamedcite = function () {
 	}
 	$textbox.focus();	// focus first
 	$textbox.textSelection('encapsulateSelection', {pre: ref});
-	citeform.style.display = 'none';
+	refsTB.citeCurrentHide();
 }
 
 refsTB.getAllRefs = function () {
@@ -779,7 +794,7 @@ refsTB.doErrorCheck = function () {
 	document.getElementById('citeselect').removeChild(document.getElementById('errorform'));
 	if (errors == 0) {
 		if (refsTB.numforms != 0) {
-			document.getElementById('citediv'+refsTB.numforms).style.display = 'none';
+			refsTB.citeCurrentHide();
 		}
 		refsTB.numforms++;
 		var form_el = document.createElement('div');
@@ -790,7 +805,7 @@ refsTB.doErrorCheck = function () {
 	}
 	else {
 		if (refsTB.numforms != 0) {
-			document.getElementById('citediv'+refsTB.numforms).style.display = 'none';
+			refsTB.citeCurrentHide();
 		}
 		refsTB.numforms++;
 		var form_el = document.createElement('div');
