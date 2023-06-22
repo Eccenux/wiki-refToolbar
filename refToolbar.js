@@ -827,4 +827,6 @@ refsTB.doErrorCheck = function () {
 	}
 }
 
-refsTB.init();
+mw.loader.using( "ext.gadget.lib-toolbar", function() {
+	refsTB.init();
+} );
