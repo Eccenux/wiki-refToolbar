@@ -36,13 +36,17 @@ if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && window.refsTB!==undef
 
 window.refsTB = {
 	/** Version of the gadget */
-	version: '1.3.4',
+	version: '1.3.5',
 	/** Number of forms */
 	numforms: 0,
 
 	/** Sets up the gadget */
 	init: function() {
 		var that = this;
+		if ( typeof toolbarGadget === 'undefined' ) {
+			console.warn('toolbarGadget not ready yet');
+			return;
+		}
 
 		toolbarGadget.addButton( {
 			title: 'Wstaw szablon cytowania (wer. ' + that.version + ')',
