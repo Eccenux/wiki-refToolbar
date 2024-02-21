@@ -8,6 +8,7 @@
   Version:
     (see below) = refsTB.version
 \* ------------------------------------------------------------------------ */
+// <nowiki>
 /* globals $ */
 /* globals sel_t, toolbarGadget */
 /* globals createCollapseButtons */
@@ -830,3 +831,4 @@ refsTB.doErrorCheck = function () {
 mw.loader.using( [ "ext.gadget.lib-toolbar", "ext.gadget.NavFrame" ] , function() {
 	refsTB.init();
 } );
+// </nowiki>
