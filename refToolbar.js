@@ -9,7 +9,6 @@
     (see below) = refsTB.version
 \* ------------------------------------------------------------------------ */
 // <nowiki>
-/* globals $ */
 /* globals sel_t, toolbarGadget */
 /* globals createCollapseButtons */
 /* globals wikEdUseWikEd, WikEdUpdateTextarea */
@@ -37,7 +36,7 @@ if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && window.refsTB!==undef
 
 window.refsTB = {
 	/** Version of the gadget */
-	version: '1.3.5',
+	version: '1.4.0a',
 	/** Number of forms */
 	numforms: 0,
 
