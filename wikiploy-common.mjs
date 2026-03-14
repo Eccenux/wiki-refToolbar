@@ -11,7 +11,7 @@ export function addConfig(configs, site, isRelease) {
 		src: 'refToolbar.js',
 		dst: `${deploymentName}.js`,
 		site,
-		nowiki: true,
+		nowiki: false,
 	}));
 	configs.push(new DeployConfig({
 		src: 'refToolbar.css',
