@@ -518,6 +518,9 @@ refsTB.getNamedRefs = function (calls) {
 		}
 	}
 	var text = document.getElementById('wpTextbox1').value;
+	return refsTB._getNamedRefs(text, calls);
+}
+refsTB._getNamedRefs = function (text, calls = false) {
 	var regex;
 	if (calls) {
 		regex = /< *?ref +?name *?= *?(('([^']*?)')|("([^"]*?)")|([^'"\s]*?[^\/]\b)) *?\/ *?>/gi //'

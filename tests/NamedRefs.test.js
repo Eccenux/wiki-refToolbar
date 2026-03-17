@@ -1,0 +1,47 @@
+/**
+ * Tests for parsing NamedRefs.
+ */
+import { describe, it, expect } from 'vitest';
+import refsTB from '../refToolbar';
+
+describe('_getNamedRefs', () => {
+
+	it('extracts double-quoted names', () => {
+		const input = '<ref name="test1">';
+		expect(refsTB._getNamedRefs(input)).toEqual(['test1']);
+	});
+
+	it('extracts single-quoted names', () => {
+		const input = "<ref name='test2'>";
+		expect(refsTB._getNamedRefs(input)).toEqual(['test2']);
+	});
+
+	it('extracts unquoted names', () => {
+		const input = '<ref name=test3>';
+		expect(refsTB._getNamedRefs(input)).toEqual(['test3']);
+	});
+
+	it('extracts multiple refs', () => {
+		const input = '<ref name="a"><ref name="b"><ref name="c">';
+		expect(refsTB._getNamedRefs(input)).toEqual(['a', 'b', 'c']);
+	});
+
+	it('ignores self-closing when calls=false', () => {
+		const input = '<ref name="a" />';
+		expect(refsTB._getNamedRefs(input)).toEqual([]);
+	});
+
+	it('handles self-closing when calls=true', () => {
+		const input = '<ref name="a" />';
+		expect(refsTB._getNamedRefs(input, true)).toEqual(['a']);
+	});
+
+	it('handles mixed formats', () => {
+		const input = `<ref name="a"><ref name='b'><ref name=c>`;
+		expect(refsTB._getNamedRefs(input)).toEqual(['a', 'b', 'c']);
+	});
+
+	it('returns empty array when no refs', () => {
+		expect(refsTB._getNamedRefs('no refs here')).toEqual([]);
+	});
+});
