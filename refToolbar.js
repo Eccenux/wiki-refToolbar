@@ -12,14 +12,13 @@
 /* globals sel_t, toolbarGadget */
 /* globals createCollapseButtons */
 /* globals wikEdUseWikEd, WikEdUpdateTextarea */
-/* globals refsTB */
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-redeclare */
 
 //
 // Object Init
 //
-if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && window.refsTB!==undefined)
+if (typeof window !== 'undefined' && document.cookie.indexOf("js_refsTB_critical=1")==-1 && window.refsTB!==undefined)
 {
 	alert('Błąd krytyczny - konflikt nazw!'+
 		'\n\n'+
@@ -34,7 +33,7 @@ if (document.cookie.indexOf("js_refsTB_critical=1")==-1 && window.refsTB!==undef
 
 }
 
-window.refsTB = {
+let refsTB = {
 	/** Version of the gadget */
 	version: '1.4.0a',
 	/** Number of forms */
@@ -828,7 +827,22 @@ refsTB.doErrorCheck = function () {
 	}
 }
 
-mw.loader.using( [ "ext.gadget.lib-toolbar", "ext.gadget.NavFrame" ] , function() {
-	refsTB.init();
-} );
+//
+// Init
+//
+if (typeof window !== 'undefined'){
+	mw.loader.using( [ "ext.gadget.lib-toolbar", "ext.gadget.NavFrame" ] , function() {
+		refsTB.init();
+	} );
+}
+
+//
+// Exports
+//
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = refsTB;
+} else if (typeof window !== 'undefined') {
+	window.refsTB = refsTB;
+}
+
 // </nowiki>
