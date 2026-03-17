@@ -21,6 +21,19 @@ describe('_getNamedRefs', () => {
 		expect(refsTB._getNamedRefs(input)).toEqual(['test3']);
 	});
 
+	it('extracts names with details and attrs', () => {
+		let inputs = [
+			`<ref name="test3" details="s. 56–78">`,
+			`<ref name='test3' details="s. 56–78">`,
+			`<ref name=test3 details="s. 56–78">`,
+			`<ref name=test3 details="s. 56–78" whatever-new-attribute="kopytko">`,
+			`<ref name=test3 whatever-new-attribute="kopytko">`,
+		];
+		for (const input of inputs) {
+			expect(refsTB._getNamedRefs(input)).toEqual(['test3']);
+		}
+	});
+
 	it('extracts multiple refs', () => {
 		const input = '<ref name="a"><ref name="b"><ref name="c">';
 		expect(refsTB._getNamedRefs(input)).toEqual(['a', 'b', 'c']);

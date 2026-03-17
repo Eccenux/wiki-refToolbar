@@ -11,9 +11,10 @@ https://github.com/Eccenux/wikiploy-rollout-example?tab=readme-ov-file#quick-sta
 
 TODO:
 - [] Obsługa podprzypisów.
+	- [x] Możliwość reuse pp.
 	- [] Możliwość dodania książki od razu z podprzypisem.
-	- [] Możliwość reuse pp.
 - [] Przy zmianie tabów nie powinno czyścić formularza.
 - [] Dodać przycisk do czyszczenia bieżącego(!) formularza.
 - [] W duplikatach/szukaniu błędów nie powinno brać pod uwagę kodu (syntax, nowiki itp).
 - [] Usunąć zależność do NavFrame? (`createCollapseButtons();`, `class="collapsible...`).
+

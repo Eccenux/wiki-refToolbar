@@ -521,26 +521,26 @@ refsTB.getNamedRefs = function (calls) {
 	return refsTB._getNamedRefs(text, calls);
 }
 refsTB._getNamedRefs = function (text, calls = false) {
-	var regex;
-	if (calls) {
-		regex = /< *?ref +?name *?= *?(('([^']*?)')|("([^"]*?)")|([^'"\s]*?[^\/]\b)) *?\/ *?>/gi //'
+	let regex;
+	if (calls) { // odwołania bez treści
+		//1='jakiś cudzysłów' 2=bezcudzysłowu
+		regex = /< *?ref[^>]* name *?= *?(?:('[^']*'|"[^"]*")|([^'"\s]*?[^\/]\b))[^>/]*\/[^>]*>/gi
 	} else {
-		regex = /< *?ref +?name *?= *?(('([^']*?)')|("([^"]*?)")|([^'"\s]*?[^\/]\b)) *?>/gi //'
+		// numeracja j/w
+		regex = /< *?ref[^>]* name *?= *?(?:('[^']*'|"[^"]*")|([^'"\s]*?[^\/]\b))[^>/]*>/gi
 	}
-	var namedrefs = new Array();
-	var i=0;
-	var nr=true;
+	let namedrefs = [];
+	let nr=true;
 	do {
-		var ref = regex.exec(text);
+		let ref = regex.exec(text);
 		if(ref != null){
-			if (ref[5]) {
-				namedrefs[i] = ref[5];
-			} else if (ref[3]) {
-				namedrefs[i] = ref[3];
+			let name = '';
+			if (ref[1]) {
+				name = ref[1].slice(1, -1);
 			} else {
-				namedrefs[i] = ref[6];
+				name = ref[2];
 			}
-			i++;
+			namedrefs.push(name);
 		} else {
 			nr=false;
 		}
