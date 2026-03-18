@@ -35,7 +35,7 @@ if (typeof window !== 'undefined' && document.cookie.indexOf("js_refsTB_critical
 
 let refsTB = {
 	/** Version of the gadget */
-	version: '1.4.1',
+	version: '1.4.2',
 	/** Number of forms */
 	numforms: 0,
 
