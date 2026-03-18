@@ -72,9 +72,11 @@ let refsTB = {
 			citemain.appendChild( this.addOption( "refsTB.citeBook()", "Książka" ) );
 			citemain.appendChild( this.addOption( "refsTB.citeJournal()", "Pismo" ) );
 			citemain.appendChild( this.addOption( "refsTB.citeAnything()", "Uniwersalny" ) );
+			citemain.insertAdjacentText('beforeend', ' • ');
 			citemain.appendChild( this.addOption( "refsTB.citeNamedRef()", "Istniejące przypisy" ) );
 			citemain.appendChild( this.addOption( "refsTB.dispErrors()", "Sprawdzenie błędów" ) );
-			citemain.appendChild( this.addOption( "refsTB.hideInitial()", "Anuluj" ) );
+			citemain.insertAdjacentText('beforeend', ' • ');
+			citemain.appendChild( this.addOption( "refsTB.hideInitial()", "Zamknij" ) );
 			var topEditor = document.querySelector('.wikiEditor-ui-top');
 			if (topEditor instanceof Element) {
 				topEditor.appendChild(citemain);
