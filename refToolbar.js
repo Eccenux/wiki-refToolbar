@@ -35,7 +35,7 @@ if (typeof window !== 'undefined' && document.cookie.indexOf("js_refsTB_critical
 
 let refsTB = {
 	/** Version of the gadget */
-	version: '1.4.0',
+	version: '1.4.1',
 	/** Number of forms */
 	numforms: 0,
 
@@ -359,7 +359,7 @@ refsTB.citeBook = function () {
 	form_el.querySelector('.refstb-addcites').addEventListener('click', ()=>{refsTB.addcites(form_el)});
 	refsTB.finalizeForm(form_el);
 	refsTB.parseCiteForm(form_el);
-	createCollapseButtons();
+	createCollapseButtons(form_el);
 }
 
 refsTB.citeJournal = function () {
@@ -509,7 +509,7 @@ refsTB.citeAnything = function () {
 	form_el.querySelector('.refstb-addcites').addEventListener('click', ()=>{refsTB.addcites(form_el)});
 	refsTB.finalizeForm(form_el);
 	refsTB.parseCiteForm(form_el);
-	createCollapseButtons();
+	createCollapseButtons(form_el);
 }
 
 /** Add single ref. */
