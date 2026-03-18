@@ -35,7 +35,7 @@ if (typeof window !== 'undefined' && document.cookie.indexOf("js_refsTB_critical
 
 let refsTB = {
 	/** Version of the gadget */
-	version: '1.4.0a',
+	version: '1.4.0',
 	/** Number of forms */
 	numforms: 0,
 
@@ -141,7 +141,7 @@ refsTB.finalizeForm = function (form_el) {
  * 
  * @param {string} subclass Form dialog extra class (identifier within forms).
  * @param {string} title Dialog title.
- * @returns 
+ * @returns {HTMLElement} Form element.
  */
 refsTB.createOrGetForm = function (subclass, title) {
 	let formContainer = document.querySelector('.refstb-citediv.'+subclass);
@@ -172,8 +172,6 @@ refsTB.citeCurrentHide = function () {
 	if (!refsTB._citeCurrentForm) return;
 	let form = refsTB._citeCurrentForm;
 	form.style.display = 'none';
-	// TODO: still need this?
-	// $(':invalid', form).each(function(){$(this).attr('disabled', 'true')});
 }
 refsTB.oldFormHide = function () {
 	if (refsTB.numforms !== 0) {
@@ -894,7 +892,7 @@ refsTB.doErrorCheck = function () {
  * @param {Object} opt
  * @param {string} opt.title
  * @param {string|HTMLElement} opt.content
- * @returns {HTMLElement}
+ * @returns {HTMLElement} Dialog.
  */
 refsTB.createDraggableDialog = function({content = '', title = 'Cytuj'} = {}) {
 	// container
