@@ -1,3 +1,38 @@
-#citeselect :invalid {
-	border-color: red;
+.refstb-citediv {
+	:invalid {
+		border-color: red;
+	}
+
+	input[type="checkbox"]:focus,
+	select:focus {
+		outline: 2px solid #4a90e2;
+		outline-offset: 2px;
+	}
 }
+
+.refstb-dialog {
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	min-width: 250px;
+	background: var(--background-color-base);
+	color: var(--color-base);
+	border: 1px solid #999;
+	box-shadow: 0 4px 10px var(--box-shadow-color-alpha-base);
+	z-index: 9999;
+
+	.refstb-header {
+		cursor: move;
+		padding: 6px 10px;
+		background: var(--background-color-neutral);
+		color: var(--color-base);
+
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.refstb-body {
+		padding: 10px;	
+	}
+}
+	

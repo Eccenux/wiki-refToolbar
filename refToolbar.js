@@ -61,13 +61,19 @@ let refsTB = {
 	},
 	/** Shows and hides the form */
 	easyCiteMain: function() {
-		var citemain = document.getElementById( 'citeselect' );
+		let citedialogs = document.getElementById( 'refstb-dialogs' );
+		if ( !citedialogs ) {
+			citedialogs = document.createElement( 'div' );
+			citedialogs.setAttribute( 'id', 'refstb-dialogs' );
+			document.body.appendChild( citedialogs );
+		}
 
+		let citemain = document.getElementById( 'refstb-main' );
 		if ( !citemain ) {
 			// Create the buttons
 			citemain = document.createElement( 'div' );
 			citemain.style.display = 'none';
-			citemain.setAttribute( 'id', 'citeselect' );
+			citemain.setAttribute( 'id', 'refstb-main' );
 			citemain.appendChild( this.addOption(()=>refsTB.citeWeb(), "Strona WWW" ) );
 			citemain.appendChild( this.addOption(()=>refsTB.citeBook(), "Książka" ) );
 			citemain.appendChild( this.addOption(()=>refsTB.citeJournal(), "Pismo" ) );
@@ -77,11 +83,11 @@ let refsTB = {
 			citemain.appendChild( this.addOption(()=>refsTB.dispErrors(), "Sprawdzenie błędów" ) );
 			citemain.insertAdjacentText('beforeend', ' • ');
 			citemain.appendChild( this.addOption(()=>refsTB.hideInitial(), "Zamknij" ) );
-			var topEditor = document.querySelector('.wikiEditor-ui-top');
+			let topEditor = document.querySelector('.wikiEditor-ui-top');
 			if (topEditor instanceof Element) {
 				topEditor.appendChild(citemain);
 			} else {
-				var txtarea = document.getElementById( 'wpTextbox1' );
+				let txtarea = document.getElementById( 'wpTextbox1' );
 				txtarea.parentNode.insertBefore( citemain, txtarea );
 			}
 		}
@@ -99,28 +105,44 @@ let refsTB = {
 //
 /** Show main panel. */
 refsTB.citeMainShow = function () {
-	var citemain = document.getElementById('citeselect');
-	$('fieldset [disabled]', citemain).each(function(){$(this).removeAttr('disabled')});
+	let citemain = document.getElementById('refstb-main');
+	let citedialogs = document.getElementById( 'refstb-dialogs' );
+	$('form [disabled]', citedialogs).each(function(){$(this).removeAttr('disabled')});
 	citemain.style.display = '';
+	citedialogs.style.display = '';
 }
 /** Hide main panel. */
 refsTB.citeMainHide = function () {
-	var citemain = document.getElementById('citeselect');
+	let citemain = document.getElementById('refstb-main');
+	let citedialogs = document.getElementById( 'refstb-dialogs' );
 	citemain.style.display = 'none';
-	$('fieldset :invalid', citemain).each(function(){$(this).attr('disabled', 'true')});
+	citedialogs.style.display = 'none';
+	$('form :invalid', citedialogs).each(function(){$(this).attr('disabled', 'true')});
 }
 /** Setup current form. */
-refsTB.createOrGetForm = function (subclass) {
-	let form = document.querySelector('.refstb-citediv.'+subclass);
-	if (form) {
-		form.style.display = '';
+refsTB.finalizeForm = function (form_el) {
+	form_el.style.display = '';
+	if (form_el.nodeName.toLowerCase() == 'form') {
+		let formContainer = form_el.closest('.refstb-dialog');
+		if (formContainer) formContainer.style.display = '';
+	}
+	requestAnimationFrame(() => {
+		let first = form_el.querySelector('select, input:not([type=hidden]):not([disabled])');
+		if (first) first.focus();
+	});
+}
+refsTB.createOrGetForm = function (subclass, title) {
+	let formContainer = document.querySelector('.refstb-citediv.'+subclass);
+	if (formContainer) {
+		formContainer.style.display = '';
 	} else {
-		form = document.createElement('form');
-		form.className = 'refstb-citediv ' + subclass;
+		let form = document.createElement('form');
+		formContainer= refsTB.createDraggableDialog({content:form, title});
+		formContainer.className = 'refstb-citediv refstb-dialog ' + subclass;
 		refsTB.numforms++;
 	}
-	refsTB._citeCurrentForm = form;
-	return form;
+	refsTB._citeCurrentForm = formContainer;
+	return formContainer.querySelector('form');
 };
 
 refsTB._citeCurrentForm = null;
@@ -190,12 +212,11 @@ refsTB.parseCiteForm = function (form) {
 refsTB.citeWeb = function () {
 	refsTB.oldFormHide();
 	var template = "Cytuj stronę";
-	var legend = "Cytowanie strony internetowej";
-	const form_el = refsTB.createOrGetForm('cite-web');
+	var title = "Cytowanie strony internetowej";
+	const form_el = refsTB.createOrGetForm('cite-web', title);
 	if (form_el._refstbDone) return;
 	form_el._refstbDone = true;
 	form_el.innerHTML =
-		'<fieldset><legend>'+legend+'</legend>'+
 		'<table cellspacing="5">'+
 		'<input type="hidden" value="'+template+'" id="template">'+
 		'<tr><td width="120"><label for="url">&nbsp;URL: </label></td>'+
@@ -232,20 +253,20 @@ refsTB.citeWeb = function () {
 			'<td width="400"><input type="text" style="width:100%" id="zarchiwizowano"></td></tr>'+
 		'</table>'+
 		'<input type="button" value="Dodaj przypis" class="refstb-addcites">'+
-	'</fieldset>';
+	'';
 	form_el.querySelector('.refstb-addcites').addEventListener('click', ()=>{refsTB.addcites(form_el)});
-	document.getElementById('citeselect').appendChild(form_el);
+	refsTB.finalizeForm(form_el);
 	refsTB.parseCiteForm(form_el);
 }
 
 refsTB.citeBook = function () {
 	refsTB.oldFormHide();
 	var template = "Cytuj książkę";
-	const form_el = refsTB.createOrGetForm('cite-book');
+	var title = 'Cytowanie wydawnictw zwartych (książek)';
+	const form_el = refsTB.createOrGetForm('cite-book', title);
 	if (form_el._refstbDone) return;
 	form_el._refstbDone = true;
 	form_el.innerHTML =
-		'<fieldset><legend>Cytowanie wydawnictw zwartych (książek)</legend>'+
 		'<table cellspacing="5">'+
 		'<input type="hidden" value="'+template+'" id="template">'+
 		'<tr><td width="120"><label for="nazwisko">&nbsp;Nazwisko: </label></td>'+
@@ -317,9 +338,9 @@ refsTB.citeBook = function () {
 			'<td width="400"><input type="text" style="width:100%" id="oclc"></td></tr>'+
 	'</table>'+
 		'<input type="button" value="Dodaj przypis" class="refstb-addcites">'+
-	'</fieldset>';
+	'';
 	form_el.querySelector('.refstb-addcites').addEventListener('click', ()=>{refsTB.addcites(form_el)});
-	document.getElementById('citeselect').appendChild(form_el);
+	refsTB.finalizeForm(form_el);
 	refsTB.parseCiteForm(form_el);
 	createCollapseButtons();
 }
@@ -327,11 +348,11 @@ refsTB.citeBook = function () {
 refsTB.citeJournal = function () {
 	refsTB.oldFormHide();
 	var template = "Cytuj pismo";
-	const form_el = refsTB.createOrGetForm('cite-journal');
+	var title = "Cytowanie czasopisma, pracy naukowej, itp.";
+	const form_el = refsTB.createOrGetForm('cite-journal', title);
 	if (form_el._refstbDone) return;
 	form_el._refstbDone = true;
 	form_el.innerHTML =
-		'<fieldset><legend>Cytowanie czasopisma, pracy naukowej, itp.</legend>'+
 		'<table cellspacing="5">'+
 		'<input type="hidden" value="'+template+'" id="template">'+
 		'<tr><td width="120"><label for="nazwisko">&nbsp;Nazwisko: </label></td>'+
@@ -374,20 +395,20 @@ refsTB.citeJournal = function () {
 			'<td width="400"><input type="text" style="width:100%" id="refname" placeholder="wpisz * aby wstawić szablon bez znaczników &lt;ref&gt;"></td></tr>'+
 		'</table>'+
 		'<input type="button" value="Dodaj przypis" class="refstb-addcites">'+
-	'</fieldset>';
+	'';
 	form_el.querySelector('.refstb-addcites').addEventListener('click', ()=>{refsTB.addcites(form_el)});
-	document.getElementById('citeselect').appendChild(form_el);
+	refsTB.finalizeForm(form_el);
 	refsTB.parseCiteForm(form_el);
 }
 
 refsTB.citeAnything = function () {
 	refsTB.oldFormHide();
 	var template = "Cytuj";
-	const form_el = refsTB.createOrGetForm('cite-any');
+	var title = "Uniwersalne cytowanie wszelkich publikacji";
+	const form_el = refsTB.createOrGetForm('cite-any', title);
 	if (form_el._refstbDone) return;
 	form_el._refstbDone = true;
 	form_el.innerHTML =
-		'<fieldset><legend>Uniwersalne cytowanie wszelkich publikacji</legend>'+
 		'<table cellspacing="5">'+
 		'<input type="hidden" value="'+template+'" id="template">'+
 		'<tr><td width="120"><label for="autor">&nbsp;Autor: </label></td>'+
@@ -469,9 +490,9 @@ refsTB.citeAnything = function () {
 		'</td></tr>'+
 		'</table>'+
 		'<input type="button" value="Dodaj przypis" class="refstb-addcites">'+
-	'</fieldset>';
+	'';
 	form_el.querySelector('.refstb-addcites').addEventListener('click', ()=>{refsTB.addcites(form_el)});
-	document.getElementById('citeselect').appendChild(form_el);
+	refsTB.finalizeForm(form_el);
 	refsTB.parseCiteForm(form_el);
 	createCollapseButtons();
 }
@@ -570,18 +591,16 @@ refsTB._getNamedRefs = function (text, calls = false) {
 refsTB.citeNamedRef = function () {
 	let namedrefs = refsTB.getNamedRefs(false);
 	refsTB.oldFormHide();
-	const form_el = refsTB.createOrGetForm('cite-namedref');
+	var title = "Przypisy z artykułu";
+	const form_el = refsTB.createOrGetForm('cite-namedref', title);
 	if (!namedrefs.length) {
 		form_el.innerHTML =
-			'<fieldset>'+
-			'<legend>Przypisy z artykułu</legend>'+
-			'Nie znaleziono żadnych przypisów z przypisanymi nazwami (<code>&lt;ref name="nazwa"&gt;</code>)'+
-			'</fieldset>';
+			'Nie znaleziono żadnych przypisów z przypisanymi nazwami (<code>&lt;ref name="nazwa"&gt;</code>)'
+		;
 	}
 	else
 	{
-		let form = `
-			<fieldset><legend>Przypisy z artykułu</legend>
+		let html = `
 				<p>
 				<label for="namedrefs-select">&nbsp;Nazwany przypis:</label>
 					<select name="namedrefs" id="namedrefs-select"></select>
@@ -590,9 +609,8 @@ refsTB.citeNamedRef = function () {
 					(opcjonalne)
 				</p>
 				<input type="button" value="Dodaj przypis" class="refstb-addnamed">
-			</fieldset>
 		`;
-		form_el.innerHTML = form;
+		form_el.innerHTML = html;
 		form_el.querySelector('.refstb-addnamed').addEventListener('click', ()=>{
 			refsTB.addnamedcite(form_el);
 		});
@@ -610,7 +628,7 @@ refsTB.citeNamedRef = function () {
 		}
 
 	}
-	document.getElementById('citeselect').appendChild(form_el);
+	refsTB.finalizeForm(form_el);
 }
 
 refsTB.addnamedcite = function (citeform) {
@@ -813,11 +831,11 @@ refsTB.errorCheck = function () {
 
 refsTB.dispErrors = function () {
 	refsTB.oldFormHide();
-	const form_el = refsTB.createOrGetForm('errors-check');
+	var title = 'Sprawdzanie błędów';
+	const form_el = refsTB.createOrGetForm('errors-check', title);
 	if (form_el._refstbDone) return;
 	form_el._refstbDone = true;
-	form_el.innerHTML = '<fieldset>'+
-		'<legend>Sprawdzanie błędów</legend>'+
+	form_el.innerHTML = ''+
 		'<b>Sprawdź:</b><br/>'+
 		'<label><input type="checkbox" id="unclosed" checked="checked" /> Niedomknięte tagi <code>&lt;ref&gt;</code></label><br/>'+
 		'<label><input type="checkbox" id="samecontent" checked="checked" /> Przypisy z tymi samymi danymi</label><br/>'+
@@ -825,33 +843,112 @@ refsTB.dispErrors = function () {
 		'<label><input type="checkbox" id="repeated" checked="checked" /> Powtórzone przypisy o tej samej nazwie</label><br/>'+
 		'<label><input type="checkbox" id="undef" checked="checked" /> Użycie nazwanych przypisów bez treści/definicji</label><br/>'+
 		'<input type="button" class="refstb-submit" value="Sprawdzenie pod kątem wybranych błędów" />'+
-		'</fieldset>';
+		'';
 	form_el.querySelector('.refstb-submit').addEventListener('click', ()=>refsTB.doErrorCheck());
-	document.getElementById('citeselect').appendChild(form_el);
+	refsTB.finalizeForm(form_el);
 }
 
 refsTB.doErrorCheck = function () {
 	if (refsTB.numforms !== 0) {
 		refsTB.citeCurrentHide();
 	}
-	const form_el = refsTB.createOrGetForm('errors-list');
+	var title = 'Sprawdzanie błędów';
+	const form_el = refsTB.createOrGetForm('errors-list', title);
 	var errors = refsTB.errorCheck();
 	if (errors == 0) {
-		form_el.innerHTML = '<fieldset>'+
-			'<legend>Sprawdzanie błędów</legend>Nie znaleziono żadnych błędów.</fieldset>';
+		form_el.innerHTML = 'Nie znaleziono żadnych błędów.';
 	}
 	else {
-		var form =
-			'<fieldset><legend>Sprawdzanie błędów</legend>'+
-			'<table border="1px">';
+		var form = '<table border="1px">';
 		for (var i=0; i<errors.length; i++) {
 			form+=errors[i];
 		}
 		form+= '</table>'+
-			'</fieldset>';
+			'';
 		form_el.innerHTML = form
 	}
-	document.getElementById('citeselect').appendChild(form_el);
+	refsTB.finalizeForm(form_el);
+}
+
+/**
+ * Creates draggable dialog window.
+ * @param {Object} opt
+ * @param {string} opt.title
+ * @param {string|HTMLElement} opt.content
+ * @returns {HTMLElement}
+ */
+refsTB.createDraggableDialog = function({content = '', title = 'Cytuj'} = {}) {
+	// container
+	const dialog = document.createElement('div'); // OR dialog?
+	dialog.style.display = 'none';
+	// dialog.style.top = '100px';
+	// dialog.style.left = '100px';
+
+	//
+	// header (draggeble)
+	const header = document.createElement('div');
+	header.className = 'refstb-header';
+
+	const closeBtn = document.createElement('button');
+	closeBtn.textContent = '×';
+	closeBtn.style.marginLeft = '10px';
+	closeBtn.onclick = () => dialog.remove();
+
+	const titleEl = document.createElement('span');
+	titleEl.textContent = title;
+
+	header.appendChild(titleEl);
+	header.appendChild(closeBtn);
+
+	//
+	// content
+	const body = document.createElement('div');
+	body.className = 'refstb-body';
+
+	if (typeof content === 'string') {
+		body.innerHTML = content;
+	} else {
+		body.appendChild(content);
+	}
+
+	//
+	// finalize
+	dialog.appendChild(header);
+	dialog.appendChild(body);
+	let citedialogs = document.getElementById( 'refstb-dialogs' );
+	citedialogs.appendChild(dialog);
+
+	refsTB.makeDraggableDialog(dialog, header)
+
+	return dialog;
+}
+/**
+ * Adds drag logic to window.
+ * @param {HTMLElement} dialog The dialog to move.
+ * @param {HTMLElement} header Drag handle.
+ */
+refsTB.makeDraggableDialog = function(dialog, header) {
+	let isDragging = false;
+	let offsetX = 0;
+	let offsetY = 0;
+
+	header.addEventListener('mousedown', (e) => {
+		isDragging = true;
+		offsetX = e.clientX - dialog.offsetLeft;
+		offsetY = e.clientY - dialog.offsetTop;
+		document.body.style.userSelect = 'none';
+	});
+
+	document.addEventListener('mousemove', (e) => {
+		if (!isDragging) return;
+		dialog.style.left = (e.clientX - offsetX) + 'px';
+		dialog.style.top = (e.clientY - offsetY) + 'px';
+	});
+
+	document.addEventListener('mouseup', () => {
+		isDragging = false;
+		document.body.style.userSelect = '';
+	});
 }
 
 //

@@ -16,6 +16,7 @@ TODO v1.4:
 - [] Przy zmianie tabów nie powinno czyścić formularza.
 	- [x] Tworzenie jednego formularza jednego typu.
 	- [x] Sprawdzenie czy formularz już istnieje i nie nadpisywanie go.
+	- [x] Okienka dialogowe (żeby formularze były poza formularzem edycji).
 	- [] Reset pól po wstawieniu? Przycisk resetu?
 	- [] Przetestować zapis formularzy przy niepoprawnych polach (vide: TODO: still need this).
 - [] Zabezpieczenie errorCheck (html?).
