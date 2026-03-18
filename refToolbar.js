@@ -549,12 +549,12 @@ refsTB._getNamedRefs = function (text, calls = false) {
 }
 
 refsTB.citeNamedRef = function () {
-	var namedrefs = refsTB.getNamedRefs(false);
+	let namedrefs = refsTB.getNamedRefs(false);
 	refsTB.oldFormHide();
 	refsTB.numforms++;
-	var form_el = document.createElement('div');
+	const form_el = document.createElement('form');
 	form_el.id = 'citediv'+refsTB.numforms;
-	if (namedrefs == '') {
+	if (!namedrefs.length) {
 		form_el.innerHTML =
 			'<fieldset>'+
 			'<legend>Przypisy z artykułu</legend>'+
@@ -563,33 +563,48 @@ refsTB.citeNamedRef = function () {
 	}
 	else
 	{
-		var form =
-			'<fieldset><legend>Przypisy z artykułu</legend>'+
-			'<table cellspacing="5">'+
-			'<tr><td><label for="namedrefs">&nbsp;Nazwane przypisy</label></td>'+
-						'<td><select name="namedrefs" id="namedrefs">';
-		for (var i=0;i<namedrefs.length;i++) {
-			form+= '<option value="'+namedrefs[i]+'">'+namedrefs[i]+'</option>';
-		}
-		form+= '</select>'+
-			'</td></tr></table>'+
-			'<input type="button" value="Dodaj przypis" onClick="refsTB.addnamedcite()">'+
-			'</fieldset>';
+		let form = `
+			<fieldset><legend>Przypisy z artykułu</legend>
+				<p>
+				<label for="namedrefs-select">&nbsp;Nazwany przypis:</label>
+					<select name="namedrefs" id="namedrefs-select"></select>
+				<label for="namedrefs-details">Szczegóły:</label>
+					<input name="details" id="namedrefs-details" type="text" placeholder="np. S. 123-125.">
+					(opcjonalne)
+				</p>
+				<input type="button" value="Dodaj przypis" class="refstb-addnamed">
+			</fieldset>
+		`;
 		form_el.innerHTML = form;
+		form_el.querySelector('.refstb-addnamed').addEventListener('click', ()=>{
+			refsTB.addnamedcite(form_el);
+		});
+		form_el.addEventListener('submit', (e) => {
+			e.preventDefault(); // stop page reload
+			refsTB.addnamedcite(form_el);
+		});
+		
+		const select = form_el.querySelector('#namedrefs-select');
+		for (let i = 0; i < namedrefs.length; i++) {
+			const option = document.createElement('option');
+			option.value = namedrefs[i];
+			option.textContent = namedrefs[i];
+			select.appendChild(option);
+		}
+
 	}
 	document.getElementById('citeselect').appendChild(form_el);
 }
 
-refsTB.addnamedcite = function () {
-	var citeform = document.getElementById('citediv'+refsTB.numforms);
-	var name = citeform.getElementsByTagName('select')[0].value;
-	var ref;
-	var $textbox = $('#wpTextbox1');
-	if ($textbox.val().search(/\{\{[rR]\|/) >= 0) {
-		ref = '{{r|'+name+'}}';
-	} else {
-		ref = '<ref name="'+name+'" />';
-	}
+refsTB.addnamedcite = function (citeform) {
+	let name = citeform.querySelector('select').value;
+	let details = citeform.querySelector('[name="details"]').value.trim();
+
+	let ref = '<ref name="'+name+'"';
+	if (details.length) ref += ' details="'+details+'"';
+	ref += ' />';
+
+	const $textbox = $('#wpTextbox1');
 	$textbox.focus();	// focus first
 	$textbox.textSelection('encapsulateSelection', {pre: ref});
 	refsTB.citeCurrentHide();
