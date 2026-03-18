@@ -68,15 +68,15 @@ let refsTB = {
 			citemain = document.createElement( 'div' );
 			citemain.style.display = 'none';
 			citemain.setAttribute( 'id', 'citeselect' );
-			citemain.appendChild( this.addOption( "refsTB.citeWeb()", "Strona WWW" ) );
-			citemain.appendChild( this.addOption( "refsTB.citeBook()", "Książka" ) );
-			citemain.appendChild( this.addOption( "refsTB.citeJournal()", "Pismo" ) );
-			citemain.appendChild( this.addOption( "refsTB.citeAnything()", "Uniwersalny" ) );
+			citemain.appendChild( this.addOption(()=>refsTB.citeWeb(), "Strona WWW" ) );
+			citemain.appendChild( this.addOption(()=>refsTB.citeBook(), "Książka" ) );
+			citemain.appendChild( this.addOption(()=>refsTB.citeJournal(), "Pismo" ) );
+			citemain.appendChild( this.addOption(()=>refsTB.citeAnything(), "Uniwersalny" ) );
 			citemain.insertAdjacentText('beforeend', ' • ');
-			citemain.appendChild( this.addOption( "refsTB.citeNamedRef()", "Istniejące przypisy" ) );
-			citemain.appendChild( this.addOption( "refsTB.dispErrors()", "Sprawdzenie błędów" ) );
+			citemain.appendChild( this.addOption(()=>refsTB.citeNamedRef(), "Istniejące przypisy" ) );
+			citemain.appendChild( this.addOption(()=>refsTB.dispErrors(), "Sprawdzenie błędów" ) );
 			citemain.insertAdjacentText('beforeend', ' • ');
-			citemain.appendChild( this.addOption( "refsTB.hideInitial()", "Zamknij" ) );
+			citemain.appendChild( this.addOption(()=>refsTB.hideInitial(), "Zamknij" ) );
 			var topEditor = document.querySelector('.wikiEditor-ui-top');
 			if (topEditor instanceof Element) {
 				topEditor.appendChild(citemain);
@@ -136,15 +136,12 @@ refsTB.oldFormHide = function () {
 	if (refsTB.numforms !== 0) {
 		refsTB.citeCurrentHide();
 	}
-	if (document.getElementById('refstb-errorform') !== null) {
-		document.getElementById('citeselect').removeChild(document.getElementById('refstb-errorform'));
-	}
 }
 
-refsTB.addOption = function (script, text) {
+refsTB.addOption = function (fun, text) {
 	var option = document.createElement('input');
 	option.setAttribute('type', 'button');
-	option.onclick = new Function(script);
+	option.addEventListener('click', fun);
 	option.setAttribute("value", text);
 	return option;
 }
@@ -195,6 +192,8 @@ refsTB.citeWeb = function () {
 	var template = "Cytuj stronę";
 	var legend = "Cytowanie strony internetowej";
 	const form_el = refsTB.createOrGetForm('cite-web');
+	if (form_el._refstbDone) return;
+	form_el._refstbDone = true;
 	form_el.innerHTML =
 		'<fieldset><legend>'+legend+'</legend>'+
 		'<table cellspacing="5">'+
@@ -243,6 +242,8 @@ refsTB.citeBook = function () {
 	refsTB.oldFormHide();
 	var template = "Cytuj książkę";
 	const form_el = refsTB.createOrGetForm('cite-book');
+	if (form_el._refstbDone) return;
+	form_el._refstbDone = true;
 	form_el.innerHTML =
 		'<fieldset><legend>Cytowanie wydawnictw zwartych (książek)</legend>'+
 		'<table cellspacing="5">'+
@@ -327,6 +328,8 @@ refsTB.citeJournal = function () {
 	refsTB.oldFormHide();
 	var template = "Cytuj pismo";
 	const form_el = refsTB.createOrGetForm('cite-journal');
+	if (form_el._refstbDone) return;
+	form_el._refstbDone = true;
 	form_el.innerHTML =
 		'<fieldset><legend>Cytowanie czasopisma, pracy naukowej, itp.</legend>'+
 		'<table cellspacing="5">'+
@@ -381,6 +384,8 @@ refsTB.citeAnything = function () {
 	refsTB.oldFormHide();
 	var template = "Cytuj";
 	const form_el = refsTB.createOrGetForm('cite-any');
+	if (form_el._refstbDone) return;
+	form_el._refstbDone = true;
 	form_el.innerHTML =
 		'<fieldset><legend>Uniwersalne cytowanie wszelkich publikacji</legend>'+
 		'<table cellspacing="5">'+
@@ -570,7 +575,7 @@ refsTB.citeNamedRef = function () {
 		form_el.innerHTML =
 			'<fieldset>'+
 			'<legend>Przypisy z artykułu</legend>'+
-			'Nie znaleziono żadnych przypisów z przypisanymi nazwami (<tt>&lt;ref name="nazwa"&gt;</tt>)'+
+			'Nie znaleziono żadnych przypisów z przypisanymi nazwami (<code>&lt;ref name="nazwa"&gt;</code>)'+
 			'</fieldset>';
 	}
 	else
@@ -712,8 +717,8 @@ refsTB.errorCheck = function () {
 	var undef = document.getElementById('undef').checked;
 	for (var i=0; i<allrefs.length; i++) {
 		if (allrefs[i].code.search(/&lt; *?\/ *?ref *?&gt;/) == -1 && unclosed) {
-			errorlist[q] = '<tr><td width="75%"><tt>'+allrefs[i].code+'</tt>'+refsTB.gotoErrorCodeHTML(allrefs[i].orig_code)+'</td>';
-			errorlist[q] += '<td width="25%">Niedomknięty tag <tt>&lt;ref&gt;</tt></td></tr>';
+			errorlist[q] = '<tr><td width="75%"><code>'+allrefs[i].code+'</code>'+refsTB.gotoErrorCodeHTML(allrefs[i].orig_code)+'</td>';
+			errorlist[q] += '<td width="25%">Niedomknięty tag <code>&lt;ref&gt;</code></td></tr>';
 			q++;
 		}
 		if (samecontent) {
@@ -725,7 +730,7 @@ refsTB.errorCheck = function () {
 			var p=0;
 			while (p<allrefs.length && !skipcheck) {
 				if (allrefscontent[i] == allrefscontent[p] && i != p) {
-					errorlist[q] = '<tr><td width="75%"><tt>'+allrefscontent[i]+'</tt>'+refsTB.gotoErrorCodeHTML(allrefs[i].orig_code)+'</td>';
+					errorlist[q] = '<tr><td width="75%"><code>'+allrefscontent[i]+'</code>'+refsTB.gotoErrorCodeHTML(allrefs[i].orig_code)+'</td>';
 					errorlist[q] += '<td width="25%">Wiele przypisów posiada tę zawartość. Do tego przypisu powinna zostać przypisana <a target="_blank" href="//pl.wikipedia.org/wiki/Pomoc:Przypisy#Wielokrotne_u.C5.BCycie_jednego_odno.C5.9Bnika">nazwa</a>.</td></tr>';
 					q++;
 					samecontentexclude[sx] = allrefscontent[i]
@@ -744,7 +749,7 @@ refsTB.errorCheck = function () {
 					}
 				}
 				if (!skipcheck) {
-					errorlist[q] = '<tr><td width="75%"><tt>'+allrefs[i].code+'</tt>'+refsTB.gotoErrorCodeHTML(allrefs[i].orig_code)+'</td>';
+					errorlist[q] = '<tr><td width="75%"><code>'+allrefs[i].code+'</code>'+refsTB.gotoErrorCodeHTML(allrefs[i].orig_code)+'</td>';
 					errorlist[q] += '<td width="25%">Przypis nie wykorzystuje szablonów cytowania</td></tr>';
 					q++;
 					templateexclude[tx] = allrefscontent[i];
@@ -766,7 +771,7 @@ refsTB.errorCheck = function () {
 			var z=0;
 			while (z<namedrefs.length && !skipcheck) {
 				if (namedrefs[k] == namedrefs[z] && k != z) {
-					errorlist[q] = '<tr><td width="75%"><tt>'+namedrefs[k]+'</tt></td>';
+					errorlist[q] = '<tr><td width="75%"><code>'+namedrefs[k]+'</code></td>';
 					errorlist[q] += '<td width="25%">Kilka różnych przypisów posiada <a target="_blank" href="//pl.wikipedia.org/wiki/Pomoc:Przypisy#Wielokrotne_u.C5.BCycie_jednego_odno.C5.9Bnika">tę samą nazwę</a>.</td></tr>';
 					q++;
 					repeatnameexclude[rx] = namedrefs[z];
@@ -789,7 +794,7 @@ refsTB.errorCheck = function () {
 			}
 			if (!skipcheck) {
 				if (!refsTB.NRcallError(namedrefs, namedrefcalls[p])) {
-					errorlist[q] = '<tr><td width="75%"><tt>'+namedrefcalls[p]+'</tt></td>';
+					errorlist[q] = '<tr><td width="75%"><code>'+namedrefcalls[p]+'</code></td>';
 					errorlist[q] += '<td width="25%">Użyty przypis nie został wcześniej <a target="_blank" href="//pl.wikipedia.org/wiki/Pomoc:Przypisy#Wielokrotne_u.C5.BCycie_jednego_odno.C5.9Bnika">zdefiniowany</a>.</td></tr>';
 					q++;
 					undefexclude[ux] = namedrefs[p];
@@ -808,38 +813,34 @@ refsTB.errorCheck = function () {
 
 refsTB.dispErrors = function () {
 	refsTB.oldFormHide();
-	var form_el = document.createElement('div');
-	form_el.id = 'refstb-errorform';
+	const form_el = refsTB.createOrGetForm('errors-check');
+	if (form_el._refstbDone) return;
+	form_el._refstbDone = true;
 	form_el.innerHTML = '<fieldset>'+
 		'<legend>Sprawdzanie błędów</legend>'+
 		'<b>Sprawdź:</b><br/>'+
-		'<input type="checkbox" id="unclosed" checked="checked" /> Niedomknięte tagi <tt>&lt;ref&gt;</tt><br/>'+
-		'<input type="checkbox" id="samecontent" checked="checked" /> Przypisy z tymi samymi danymi<br/>'+
-		'<input type="checkbox" id="templates" checked="checked" /> Przypisy niewykorzystujące szablonów cytowania<br/>'+
-		'<input type="checkbox" id="repeated" checked="checked" /> Powtórzone przypisy o tej samej nazwie<br/>'+
-		'<input type="checkbox" id="undef" checked="checked" /> Użycie nazwanych przypisów bez treści/definicji<br/>'+
-		'<input type="button" id="errorchecksubmit" value="Sprawdzenie pod kątem wybranych błędów" onclick="refsTB.doErrorCheck()"/>'+
+		'<label><input type="checkbox" id="unclosed" checked="checked" /> Niedomknięte tagi <code>&lt;ref&gt;</code></label><br/>'+
+		'<label><input type="checkbox" id="samecontent" checked="checked" /> Przypisy z tymi samymi danymi</label><br/>'+
+		'<label><input type="checkbox" id="templates" checked="checked" /> Przypisy niewykorzystujące szablonów cytowania</label><br/>'+
+		'<label><input type="checkbox" id="repeated" checked="checked" /> Powtórzone przypisy o tej samej nazwie</label><br/>'+
+		'<label><input type="checkbox" id="undef" checked="checked" /> Użycie nazwanych przypisów bez treści/definicji</label><br/>'+
+		'<input type="button" class="refstb-submit" value="Sprawdzenie pod kątem wybranych błędów" />'+
 		'</fieldset>';
+	form_el.querySelector('.refstb-submit').addEventListener('click', ()=>refsTB.doErrorCheck());
 	document.getElementById('citeselect').appendChild(form_el);
 }
 
 refsTB.doErrorCheck = function () {
+	if (refsTB.numforms !== 0) {
+		refsTB.citeCurrentHide();
+	}
+	const form_el = refsTB.createOrGetForm('errors-list');
 	var errors = refsTB.errorCheck();
-	document.getElementById('citeselect').removeChild(document.getElementById('refstb-errorform'));
 	if (errors == 0) {
-		if (refsTB.numforms !== 0) {
-			refsTB.citeCurrentHide();
-		}
-		const form_el = refsTB.createOrGetForm('cite-errors');
 		form_el.innerHTML = '<fieldset>'+
 			'<legend>Sprawdzanie błędów</legend>Nie znaleziono żadnych błędów.</fieldset>';
-		document.getElementById('citeselect').appendChild(form_el);
 	}
 	else {
-		if (refsTB.numforms !== 0) {
-			refsTB.citeCurrentHide();
-		}
-		const form_el = refsTB.createOrGetForm('cite-errors');
 		var form =
 			'<fieldset><legend>Sprawdzanie błędów</legend>'+
 			'<table border="1px">';
@@ -849,8 +850,8 @@ refsTB.doErrorCheck = function () {
 		form+= '</table>'+
 			'</fieldset>';
 		form_el.innerHTML = form
-		document.getElementById('citeselect').appendChild(form_el);
 	}
+	document.getElementById('citeselect').appendChild(form_el);
 }
 
 //

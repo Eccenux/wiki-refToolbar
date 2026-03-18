@@ -15,10 +15,10 @@ TODO v1.4:
 	- [x] Możliwość dodania `details` przy reuse.
 - [] Przy zmianie tabów nie powinno czyścić formularza.
 	- [x] Tworzenie jednego formularza jednego typu.
-	- [] Spr. czy formularz już istnieje i nie nadpisywanie go.
+	- [x] Sprawdzenie czy formularz już istnieje i nie nadpisywanie go.
 	- [] Reset pól po wstawieniu? Przycisk resetu?
 	- [] Przetestować zapis formularzy przy niepoprawnych polach (vide: TODO: still need this).
-- [] Dodać przycisk do czyszczenia bieżącego(!) formularza.
+- [] Zabezpieczenie errorCheck (html?).
 - [] W duplikatach/szukaniu błędów nie powinno brać pod uwagę kodu (syntax, nowiki itp).
 - [] Usunąć zależność do NavFrame? (`createCollapseButtons();`, `class="collapsible...`).
 
