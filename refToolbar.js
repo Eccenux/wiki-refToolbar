@@ -162,6 +162,7 @@ refsTB.isFormReady = function (form_el) {
 		refsTB.finalizeForm(form_el);
 		return true;
 	}
+	form_el._refstbDone = true;
 	return false;
 }
 
@@ -271,7 +272,7 @@ refsTB.citeWeb = function () {
 		'<td width="120"><label for="zarchiwizowano">&nbsp;Data archiwizacji: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="zarchiwizowano"></td></tr>'+
 		'</table>'+
-		'<input type="button" value="Dodaj przypis" class="refstb-addcites">'+
+		'<input type="button" value="Dodaj przypis" class="refstb-addcites"> <button type="reset">Reset</button>'+
 	'';
 	form_el.querySelector('.refstb-addcites').addEventListener('click', ()=>{refsTB.addcites(form_el)});
 	refsTB.finalizeForm(form_el);
@@ -355,7 +356,7 @@ refsTB.citeBook = function () {
 		'<td width="120"><label for="oclc">&nbsp;OCLC: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="oclc"></td></tr>'+
 	'</table>'+
-		'<input type="button" value="Dodaj przypis" class="refstb-addcites">'+
+		'<input type="button" value="Dodaj przypis" class="refstb-addcites"> <button type="reset">Reset</button>'+
 	'';
 	form_el.querySelector('.refstb-addcites').addEventListener('click', ()=>{refsTB.addcites(form_el)});
 	refsTB.finalizeForm(form_el);
@@ -411,7 +412,7 @@ refsTB.citeJournal = function () {
 		'<td width="120"><label for="refname">&nbsp;Nazwa przypisu<sup>*</sup>: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="refname" placeholder="wpisz * aby wstawić szablon bez znaczników &lt;ref&gt;"></td></tr>'+
 		'</table>'+
-		'<input type="button" value="Dodaj przypis" class="refstb-addcites">'+
+		'<input type="button" value="Dodaj przypis" class="refstb-addcites"> <button type="reset">Reset</button>'+
 	'';
 	form_el.querySelector('.refstb-addcites').addEventListener('click', ()=>{refsTB.addcites(form_el)});
 	refsTB.finalizeForm(form_el);
@@ -505,7 +506,7 @@ refsTB.citeAnything = function () {
 	'</table>'+
 		'</td></tr>'+
 		'</table>'+
-		'<input type="button" value="Dodaj przypis" class="refstb-addcites">'+
+		'<input type="button" value="Dodaj przypis" class="refstb-addcites"> <button type="reset">Reset</button>'+
 	'';
 	form_el.querySelector('.refstb-addcites').addEventListener('click', ()=>{refsTB.addcites(form_el)});
 	refsTB.finalizeForm(form_el);

@@ -13,12 +13,12 @@ TODO v1.4:
 - [] Obsługa podprzypisów.
 	- [x] Możliwość reuse pp.
 	- [x] Możliwość dodania `details` przy reuse.
-- [] Przy zmianie tabów nie powinno czyścić formularza.
+- [x] Przy zmianie tabów nie powinno czyścić formularza.
 	- [x] Tworzenie jednego formularza jednego typu.
 	- [x] Sprawdzenie czy formularz już istnieje i nie nadpisywanie go.
 	- [x] Okienka dialogowe (żeby formularze były poza formularzem edycji).
-	- [] Reset pól po wstawieniu? Przycisk resetu?
-	- [] Przetestować zapis formularzy przy niepoprawnych polach (vide: TODO: still need this).
+	- [x] Przycisk resetu.
+	- [x] Przetestować zapis formularzy przy niepoprawnych polach (vide: TODO: still need this).
 - [] Zabezpieczenie errorCheck (html?).
 - [] W duplikatach/szukaniu błędów nie powinno brać pod uwagę kodu (syntax, nowiki itp).
 - [] Usunąć zależność do NavFrame? (`createCollapseButtons();`, `class="collapsible...`).
