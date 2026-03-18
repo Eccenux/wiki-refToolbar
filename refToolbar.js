@@ -614,10 +614,13 @@ refsTB.citeNamedRef = function () {
 		form_el.querySelector('.refstb-addnamed').addEventListener('click', ()=>{
 			refsTB.addnamedcite(form_el);
 		});
-		form_el.addEventListener('submit', (e) => {
-			e.preventDefault(); // stop page reload
-			refsTB.addnamedcite(form_el);
-		});
+		if (!form_el._refsTb_submitDone) {
+			form_el._refsTb_submitDone = true;
+			form_el.addEventListener('submit', (e) => {
+				e.preventDefault(); // stop page reload
+				refsTB.addnamedcite(form_el);
+			});
+		}
 		
 		const select = form_el.querySelector('#namedrefs-select');
 		for (let i = 0; i < namedrefs.length; i++) {
