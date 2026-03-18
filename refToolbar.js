@@ -107,11 +107,36 @@ refsTB.citeMainHide = function () {
 	citemain.style.display = 'none';
 	$('fieldset :invalid', citemain).each(function(){$(this).attr('disabled', 'true')});
 }
+/** Setup current form. */
+refsTB.createOrGetForm = function (subclass) {
+	let form = document.querySelector('.refstb-citediv.'+subclass);
+	if (form) {
+		form.style.display = '';
+	} else {
+		form = document.createElement('form');
+		form.className = 'refstb-citediv ' + subclass;
+		refsTB.numforms++;
+	}
+	refsTB._citeCurrentForm = form;
+	return form;
+};
+
+refsTB._citeCurrentForm = null;
 /** Hide just the current form. */
 refsTB.citeCurrentHide = function () {
-	var form = document.getElementById('citediv'+refsTB.numforms);
+	if (!refsTB._citeCurrentForm) return;
+	let form = refsTB._citeCurrentForm;
 	form.style.display = 'none';
-	$(':invalid', form).each(function(){$(this).attr('disabled', 'true')});
+	// TODO: still need this?
+	// $(':invalid', form).each(function(){$(this).attr('disabled', 'true')});
+}
+refsTB.oldFormHide = function () {
+	if (refsTB.numforms !== 0) {
+		refsTB.citeCurrentHide();
+	}
+	if (document.getElementById('refstb-errorform') !== null) {
+		document.getElementById('citeselect').removeChild(document.getElementById('refstb-errorform'));
+	}
 }
 
 refsTB.addOption = function (script, text) {
@@ -127,15 +152,6 @@ refsTB.hideInitial = function () {
 	refsTB.oldFormHide();
 }
 
-refsTB.oldFormHide = function () {
-	if (refsTB.numforms !== 0) {
-		refsTB.citeCurrentHide();
-	}
-	if (document.getElementById('errorform') !== null) {
-		document.getElementById('citeselect').removeChild(document.getElementById('errorform'));
-	}
-}
-
 /** Get current date in ISO format */
 refsTB.getTime = function () {
 	var time = new Date();
@@ -148,8 +164,8 @@ refsTB.getTime = function () {
 	return (newtime);
 }
 
-refsTB.parseCiteForm = function (form_id) {
-	var els = document.getElementById(form_id).getElementsByTagName('input');
+refsTB.parseCiteForm = function (form) {
+	var els = form.getElementsByTagName('input');
 	for (var i=0; i<els.length; i++)
 	{
 		if (els[i].getAttribute('type')!='hidden')
@@ -164,7 +180,7 @@ refsTB.parseCiteForm = function (form_id) {
 					e = window.event;
 				}
 				if (e.keyCode == '13') {
-					refsTB.addcites();
+					refsTB.addcites(form);
 					return false;
 				}
 			};
@@ -176,9 +192,7 @@ refsTB.citeWeb = function () {
 	refsTB.oldFormHide();
 	var template = "Cytuj stronę";
 	var legend = "Cytowanie strony internetowej";
-	refsTB.numforms++;
-	var form_el = document.createElement('div');
-	form_el.id = 'citediv'+refsTB.numforms;
+	const form_el = refsTB.createOrGetForm('cite-web');
 	form_el.innerHTML =
 		'<fieldset><legend>'+legend+'</legend>'+
 		'<table cellspacing="5">'+
@@ -216,18 +230,17 @@ refsTB.citeWeb = function () {
 		'<td width="120"><label for="zarchiwizowano">&nbsp;Data archiwizacji: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="zarchiwizowano"></td></tr>'+
 		'</table>'+
-		'<input type="button" value="Dodaj przypis" onClick="refsTB.addcites()">'+
+		'<input type="button" value="Dodaj przypis" class="refstb-addcites">'+
 	'</fieldset>';
+	form_el.querySelector('.refstb-addcites').addEventListener('click', ()=>{refsTB.addcites(form_el)});
 	document.getElementById('citeselect').appendChild(form_el);
-	refsTB.parseCiteForm(form_el.id);
+	refsTB.parseCiteForm(form_el);
 }
 
 refsTB.citeBook = function () {
 	refsTB.oldFormHide();
 	var template = "Cytuj książkę";
-	refsTB.numforms++;
-	var form_el = document.createElement('div');
-	form_el.id = 'citediv'+refsTB.numforms
+	const form_el = refsTB.createOrGetForm('cite-book');
 	form_el.innerHTML =
 		'<fieldset><legend>Cytowanie wydawnictw zwartych (książek)</legend>'+
 		'<table cellspacing="5">'+
@@ -300,19 +313,18 @@ refsTB.citeBook = function () {
 		'<td width="120"><label for="oclc">&nbsp;OCLC: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="oclc"></td></tr>'+
 	'</table>'+
-		'<input type="button" value="Dodaj przypis" onClick="refsTB.addcites()">'+
+		'<input type="button" value="Dodaj przypis" class="refstb-addcites">'+
 	'</fieldset>';
+	form_el.querySelector('.refstb-addcites').addEventListener('click', ()=>{refsTB.addcites(form_el)});
 	document.getElementById('citeselect').appendChild(form_el);
-	refsTB.parseCiteForm(form_el.id);
+	refsTB.parseCiteForm(form_el);
 	createCollapseButtons();
 }
 
 refsTB.citeJournal = function () {
 	refsTB.oldFormHide();
 	var template = "Cytuj pismo";
-	refsTB.numforms++;
-	var form_el = document.createElement('div');
-	form_el.id = 'citediv'+refsTB.numforms
+	const form_el = refsTB.createOrGetForm('cite-journal');
 	form_el.innerHTML =
 		'<fieldset><legend>Cytowanie czasopisma, pracy naukowej, itp.</legend>'+
 		'<table cellspacing="5">'+
@@ -356,18 +368,17 @@ refsTB.citeJournal = function () {
 		'<td width="120"><label for="refname">&nbsp;Nazwa przypisu<sup>*</sup>: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="refname" placeholder="wpisz * aby wstawić szablon bez znaczników &lt;ref&gt;"></td></tr>'+
 		'</table>'+
-		'<input type="button" value="Dodaj przypis" onClick="refsTB.addcites()">'+
+		'<input type="button" value="Dodaj przypis" class="refstb-addcites">'+
 	'</fieldset>';
+	form_el.querySelector('.refstb-addcites').addEventListener('click', ()=>{refsTB.addcites(form_el)});
 	document.getElementById('citeselect').appendChild(form_el);
-	refsTB.parseCiteForm(form_el.id);
+	refsTB.parseCiteForm(form_el);
 }
 
 refsTB.citeAnything = function () {
 	refsTB.oldFormHide();
 	var template = "Cytuj";
-	refsTB.numforms++;
-	var form_el = document.createElement('div');
-	form_el.id = 'citediv'+refsTB.numforms
+	const form_el = refsTB.createOrGetForm('cite-any');
 	form_el.innerHTML =
 		'<fieldset><legend>Uniwersalne cytowanie wszelkich publikacji</legend>'+
 		'<table cellspacing="5">'+
@@ -450,16 +461,17 @@ refsTB.citeAnything = function () {
 	'</table>'+
 		'</td></tr>'+
 		'</table>'+
-		'<input type="button" value="Dodaj przypis" onClick="refsTB.addcites()">'+
+		'<input type="button" value="Dodaj przypis" class="refstb-addcites">'+
 	'</fieldset>';
+	form_el.querySelector('.refstb-addcites').addEventListener('click', ()=>{refsTB.addcites(form_el)});
 	document.getElementById('citeselect').appendChild(form_el);
-	refsTB.parseCiteForm(form_el.id);
+	refsTB.parseCiteForm(form_el);
 	createCollapseButtons();
 }
 
 /** Add single ref. */
-refsTB.addcites = function () {
-	var cites = document.getElementById('citediv'+refsTB.numforms).getElementsByTagName('input');
+refsTB.addcites = function (form) {
+	var cites = form.getElementsByTagName('input');
 	
 	// to key:value map
 	var values = {};
@@ -551,9 +563,7 @@ refsTB._getNamedRefs = function (text, calls = false) {
 refsTB.citeNamedRef = function () {
 	let namedrefs = refsTB.getNamedRefs(false);
 	refsTB.oldFormHide();
-	refsTB.numforms++;
-	const form_el = document.createElement('form');
-	form_el.id = 'citediv'+refsTB.numforms;
+	const form_el = refsTB.createOrGetForm('cite-namedref');
 	if (!namedrefs.length) {
 		form_el.innerHTML =
 			'<fieldset>'+
@@ -797,7 +807,7 @@ refsTB.errorCheck = function () {
 refsTB.dispErrors = function () {
 	refsTB.oldFormHide();
 	var form_el = document.createElement('div');
-	form_el.id = 'errorform';
+	form_el.id = 'refstb-errorform';
 	form_el.innerHTML = '<fieldset>'+
 		'<legend>Sprawdzanie błędów</legend>'+
 		'<b>Sprawdź:</b><br/>'+
@@ -813,25 +823,21 @@ refsTB.dispErrors = function () {
 
 refsTB.doErrorCheck = function () {
 	var errors = refsTB.errorCheck();
-	document.getElementById('citeselect').removeChild(document.getElementById('errorform'));
+	document.getElementById('citeselect').removeChild(document.getElementById('refstb-errorform'));
 	if (errors == 0) {
-		if (refsTB.numforms != 0) {
+		if (refsTB.numforms !== 0) {
 			refsTB.citeCurrentHide();
 		}
-		refsTB.numforms++;
-		var form_el = document.createElement('div');
-		form_el.id = 'citediv'+refsTB.numforms;
+		const form_el = refsTB.createOrGetForm('cite-errors');
 		form_el.innerHTML = '<fieldset>'+
 			'<legend>Sprawdzanie błędów</legend>Nie znaleziono żadnych błędów.</fieldset>';
 		document.getElementById('citeselect').appendChild(form_el);
 	}
 	else {
-		if (refsTB.numforms != 0) {
+		if (refsTB.numforms !== 0) {
 			refsTB.citeCurrentHide();
 		}
-		refsTB.numforms++;
-		var form_el = document.createElement('div');
-		form_el.id = 'citediv'+refsTB.numforms;
+		const form_el = refsTB.createOrGetForm('cite-errors');
 		var form =
 			'<fieldset><legend>Sprawdzanie błędów</legend>'+
 			'<table border="1px">';
