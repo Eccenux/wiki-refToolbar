@@ -131,6 +131,18 @@ refsTB.finalizeForm = function (form_el) {
 		if (first) first.focus();
 	});
 }
+/**
+ * Create new form-dialog or return previous instance.
+ * 
+ * If subclass already exists in DOM then it will not be created again,
+ * instead previous form will be returned.
+ * 
+ * Note you must call `refsTB.finalizeForm()` when you're done preparing form fields.
+ * 
+ * @param {string} subclass Form dialog extra class (identifier within forms).
+ * @param {string} title Dialog title.
+ * @returns 
+ */
 refsTB.createOrGetForm = function (subclass, title) {
 	let formContainer = document.querySelector('.refstb-citediv.'+subclass);
 	if (formContainer) {
@@ -144,6 +156,14 @@ refsTB.createOrGetForm = function (subclass, title) {
 	refsTB._citeCurrentForm = formContainer;
 	return formContainer.querySelector('form');
 };
+/** Check and make sure form is ready. */
+refsTB.isFormReady = function (form_el) {
+	if (form_el._refstbDone) {
+		refsTB.finalizeForm(form_el);
+		return true;
+	}
+	return false;
+}
 
 refsTB._citeCurrentForm = null;
 /** Hide just the current form. */
@@ -214,8 +234,7 @@ refsTB.citeWeb = function () {
 	var template = "Cytuj stronę";
 	var title = "Cytowanie strony internetowej";
 	const form_el = refsTB.createOrGetForm('cite-web', title);
-	if (form_el._refstbDone) return;
-	form_el._refstbDone = true;
+	if (refsTB.isFormReady(form_el)) return;
 	form_el.innerHTML =
 		'<table cellspacing="5">'+
 		'<input type="hidden" value="'+template+'" id="template">'+
@@ -264,8 +283,7 @@ refsTB.citeBook = function () {
 	var template = "Cytuj książkę";
 	var title = 'Cytowanie wydawnictw zwartych (książek)';
 	const form_el = refsTB.createOrGetForm('cite-book', title);
-	if (form_el._refstbDone) return;
-	form_el._refstbDone = true;
+	if (refsTB.isFormReady(form_el)) return;
 	form_el.innerHTML =
 		'<table cellspacing="5">'+
 		'<input type="hidden" value="'+template+'" id="template">'+
@@ -350,8 +368,7 @@ refsTB.citeJournal = function () {
 	var template = "Cytuj pismo";
 	var title = "Cytowanie czasopisma, pracy naukowej, itp.";
 	const form_el = refsTB.createOrGetForm('cite-journal', title);
-	if (form_el._refstbDone) return;
-	form_el._refstbDone = true;
+	if (refsTB.isFormReady(form_el)) return;
 	form_el.innerHTML =
 		'<table cellspacing="5">'+
 		'<input type="hidden" value="'+template+'" id="template">'+
@@ -406,8 +423,7 @@ refsTB.citeAnything = function () {
 	var template = "Cytuj";
 	var title = "Uniwersalne cytowanie wszelkich publikacji";
 	const form_el = refsTB.createOrGetForm('cite-any', title);
-	if (form_el._refstbDone) return;
-	form_el._refstbDone = true;
+	if (refsTB.isFormReady(form_el)) return;
 	form_el.innerHTML =
 		'<table cellspacing="5">'+
 		'<input type="hidden" value="'+template+'" id="template">'+
@@ -836,8 +852,7 @@ refsTB.dispErrors = function () {
 	refsTB.oldFormHide();
 	var title = 'Sprawdzanie błędów';
 	const form_el = refsTB.createOrGetForm('errors-check', title);
-	if (form_el._refstbDone) return;
-	form_el._refstbDone = true;
+	if (refsTB.isFormReady(form_el)) return;
 	form_el.innerHTML = ''+
 		'<b>Sprawdź:</b><br/>'+
 		'<label><input type="checkbox" id="unclosed" checked="checked" /> Niedomknięte tagi <code>&lt;ref&gt;</code></label><br/>'+
