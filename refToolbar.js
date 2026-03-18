@@ -941,6 +941,8 @@ refsTB.makeDraggableDialog = function(dialog, header) {
 
 	document.addEventListener('mousemove', (e) => {
 		if (!isDragging) return;
+		dialog.style.right = 'auto';
+		dialog.style.bottom = 'auto';
 		dialog.style.left = (e.clientX - offsetX) + 'px';
 		dialog.style.top = (e.clientY - offsetY) + 'px';
 	});
