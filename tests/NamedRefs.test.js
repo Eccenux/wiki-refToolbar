@@ -54,6 +54,16 @@ describe('_getNamedRefs', () => {
 		expect(refsTB._getNamedRefs(input)).toEqual(['a', 'b', 'c']);
 	});
 
+	it('find nonunique calls', () => {
+		const input = `<ref name="a" /><ref name='a' /><ref name=b />`;
+		expect(refsTB._getNamedRefs(input, true)).toEqual(['a', 'a', 'b']);
+	});
+
+	it('find all unique names of refs', () => {
+		const input = `<ref name="a" /><ref name='a' /><ref name=b /><ref name='a'><ref name='c'>`;
+		expect(refsTB._getAllNames(input, true)).toEqual(['a', 'b', 'c']);
+	});
+
 	it('returns empty array when no refs', () => {
 		expect(refsTB._getNamedRefs('no refs here')).toEqual([]);
 	});

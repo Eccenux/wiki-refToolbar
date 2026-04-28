@@ -35,7 +35,7 @@ if (typeof window !== 'undefined' && document.cookie.indexOf("js_refsTB_critical
 
 let refsTB = {
 	/** Version of the gadget */
-	version: '1.4.2',
+	version: '1.4.3',
 	/** Number of forms */
 	numforms: 0,
 
@@ -566,14 +566,25 @@ refsTB.addcites = function (form) {
 	refsTB.citeCurrentHide();
 }
 
-refsTB.getNamedRefs = function (calls) {
+refsTB.getNamedRefs = function (calls, all = false) {
 	if (typeof(wikEdUseWikEd) != 'undefined') {
 		if (wikEdUseWikEd == true) {
 			WikEdUpdateTextarea();
 		}
 	}
 	var text = document.getElementById('wpTextbox1').value;
+	if (all) {
+		return refsTB._getAllNames(text);
+	}
 	return refsTB._getNamedRefs(text, calls);
+}
+/**
+ * Gets all names of refs both from calls and defintions.
+ */
+refsTB._getAllNames = function (text) {
+	let calls = refsTB._getNamedRefs(text, true);
+	let names = refsTB._getNamedRefs(text, false);
+	return [...new Set([...calls, ...names])];
 }
 refsTB._getNamedRefs = function (text, calls = false) {
 	let regex;
@@ -603,8 +614,12 @@ refsTB._getNamedRefs = function (text, calls = false) {
 	return namedrefs;
 }
 
+/**
+ * Istniejące przypisy.
+ */
 refsTB.citeNamedRef = function () {
-	let namedrefs = refsTB.getNamedRefs(false);
+	// names of all refs (calls and definitions)
+	let namedrefs = refsTB.getNamedRefs(true, true).sort();
 	refsTB.oldFormHide();
 	var title = "Przypisy z artykułu";
 	const form_el = refsTB.createOrGetForm('cite-namedref', title);
@@ -663,6 +678,10 @@ refsTB.addnamedcite = function (citeform) {
 	refsTB.citeCurrentHide();
 }
 
+/**
+ * All refs in the textarea.
+ * @returns {code:'&lt;ref', index:123, orig_code:'<ref...'}
+ */
 refsTB.getAllRefs = function () {
 	if (typeof(wikEdUseWikEd) != 'undefined') {
 		if (wikEdUseWikEd == true) {
