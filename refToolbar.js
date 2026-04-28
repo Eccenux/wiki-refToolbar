@@ -35,7 +35,7 @@ if (typeof window !== 'undefined' && document.cookie.indexOf("js_refsTB_critical
 
 let refsTB = {
 	/** Version of the gadget */
-	version: '1.4.3',
+	version: '1.5.0',
 	/** Number of forms */
 	numforms: 0,
 
@@ -566,16 +566,23 @@ refsTB.addcites = function (form) {
 	refsTB.citeCurrentHide();
 }
 
-refsTB.getNamedRefs = function (calls, all = false) {
+/** Get current text from the editor. */
+refsTB.getEditText = function () {
 	if (typeof(wikEdUseWikEd) != 'undefined') {
 		if (wikEdUseWikEd == true) {
 			WikEdUpdateTextarea();
 		}
 	}
 	var text = document.getElementById('wpTextbox1').value;
-	if (all) {
-		return refsTB._getAllNames(text);
-	}
+	return text;
+}
+/**
+ * Get names from the current editor.
+ * @param {boolean} calls – true to only get calls, false to only get definitions.
+ * @returns {string[]}
+ */
+refsTB.getNamedRefs = function (calls) {
+	var text = refsTB.getEditText();
 	return refsTB._getNamedRefs(text, calls);
 }
 /**
@@ -614,12 +621,67 @@ refsTB._getNamedRefs = function (text, calls = false) {
 	return namedrefs;
 }
 
+/** Editing a section? */
+refsTB.isSectionEdit = () => location.search.search(/[?&]section=/) >= 0;
+
+/**
+ * Run async task with a wait indicator.
+ * @param {() => Promise<any>} fn
+ * @returns {Promise<any>}
+ */
+refsTB.withWaitState = async function(fn) {
+	$('#refstb-main input').addClass('oo-ui-pendingElement-pending').prop('disabled', true);
+	try {
+		return await fn();
+	} finally {
+		$('#refstb-main input').removeClass('oo-ui-pendingElement-pending').prop('disabled', false);
+	}
+}
+
+refsTB._wikitextCache = false;
+
+/**
+ * Fetch full wikitext of the current page.
+ * @returns {Promise<string>}
+ */
+refsTB.getWikitext = async function(cached = true) {
+	if (cached && refsTB._wikitextCache !== false) {
+		return refsTB._wikitextCache;
+	}
+
+	const api = new mw.Api();
+	const res = await api.get({
+		action: 'query',
+		prop: 'revisions',
+		titles: mw.config.get('wgPageName'),
+		rvslots: 'main',
+		rvprop: 'content',
+		formatversion: 2
+	});
+
+	let text = res.query.pages[0].revisions[0].slots.main.content;
+	refsTB._wikitextCache = text;
+	return text;
+}
+
 /**
  * Istniejące przypisy.
  */
-refsTB.citeNamedRef = function () {
+refsTB.citeNamedRef = async function () {
+	let text = refsTB.getEditText();
+	// try to get full text
+	if (refsTB.isSectionEdit()) {
+		await refsTB.withWaitState(async () => {
+			try {
+				const wikitext = await refsTB.getWikitext();
+				text += '\n' + wikitext;
+			} catch (e) {
+				console.warn('[refsTB]', 'Unable to read full text.', e);
+			}
+		});
+	}
 	// names of all refs (calls and definitions)
-	let namedrefs = refsTB.getNamedRefs(true, true).sort();
+	let namedrefs = refsTB._getAllNames(text).sort();
 	refsTB.oldFormHide();
 	var title = "Przypisy z artykułu";
 	const form_el = refsTB.createOrGetForm('cite-namedref', title);
@@ -683,12 +745,7 @@ refsTB.addnamedcite = function (citeform) {
  * @returns {code:'&lt;ref', index:123, orig_code:'<ref...'}
  */
 refsTB.getAllRefs = function () {
-	if (typeof(wikEdUseWikEd) != 'undefined') {
-		if (wikEdUseWikEd == true) {
-			WikEdUpdateTextarea();
-		}
-	}
-	var text = document.getElementById('wpTextbox1').value;
+	var text = refsTB.getEditText();
 	var regex = /< *?ref( +?name *?= *?(('([^']*?)')|("([^"]*?)")|([^'"\s]*?[^\/]\b)))? *?>((.|\n)*?)< *?\/? *?ref *?>/gim //"
 	var allrefs = new Array();
 	var i=0;

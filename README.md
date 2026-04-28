@@ -19,7 +19,7 @@ TODO v1.4:
 	- [x] Okienka dialogowe (żeby formularze były poza formularzem edycji).
 	- [x] Przycisk resetu.
 	- [x] Przetestować zapis formularzy przy niepoprawnych polach.
-TODO v1.5?:
+TODO v1.6?:
 - [] Zabezpieczenie errorCheck (html?).
 - [] W duplikatach/szukaniu błędów nie powinno brać pod uwagę kodu (syntax, nowiki itp).
 - [] Usunąć zależność do NavFrame? (`createCollapseButtons();`, `class="collapsible...`).
