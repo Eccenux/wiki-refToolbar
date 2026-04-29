@@ -11,6 +11,7 @@
 // <nowiki>
 /* globals sel_t, toolbarGadget */
 /* globals createCollapseButtons */
+/* globals SimpleDragDialog */
 /* globals wikEdUseWikEd, WikEdUpdateTextarea */
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-redeclare */
@@ -35,7 +36,7 @@ if (typeof window !== 'undefined' && document.cookie.indexOf("js_refsTB_critical
 
 let refsTB = {
 	/** Version of the gadget */
-	version: '1.5.0',
+	version: '1.6.0',
 	/** Number of forms */
 	numforms: 0,
 
@@ -149,8 +150,14 @@ refsTB.createOrGetForm = function (subclass, title) {
 		formContainer.style.display = '';
 	} else {
 		let form = document.createElement('form');
-		formContainer= refsTB.createDraggableDialog({content:form, title});
-		formContainer.className = 'refstb-citediv refstb-dialog ' + subclass;
+		let sdd = new SimpleDragDialog();
+		sdd.create({
+			content:form, title,
+			dialogClass:'refstb-citediv refstb-dialog ' + subclass,
+			startHidden:false,
+			removeOnClose:false,
+		});
+		formContainer = sdd.dialog;
 		refsTB.numforms++;
 	}
 	refsTB._citeCurrentForm = formContainer;
@@ -963,94 +970,11 @@ refsTB.doErrorCheck = function () {
 	refsTB.finalizeForm(form_el);
 }
 
-/**
- * Creates draggable dialog window.
- * @param {Object} opt
- * @param {string} opt.title
- * @param {string|HTMLElement} opt.content
- * @returns {HTMLElement} Dialog.
- */
-refsTB.createDraggableDialog = function({content = '', title = 'Cytuj'} = {}) {
-	// container
-	const dialog = document.createElement('div'); // OR dialog?
-	dialog.style.display = 'none';
-	// dialog.style.top = '100px';
-	// dialog.style.left = '100px';
-
-	//
-	// header (draggeble)
-	const header = document.createElement('div');
-	header.className = 'refstb-header';
-
-	const closeBtn = document.createElement('button');
-	closeBtn.textContent = '×';
-	closeBtn.style.marginLeft = '10px';
-	closeBtn.onclick = () => dialog.remove();
-
-	const titleEl = document.createElement('span');
-	titleEl.textContent = title;
-
-	header.appendChild(titleEl);
-	header.appendChild(closeBtn);
-
-	//
-	// content
-	const body = document.createElement('div');
-	body.className = 'refstb-body';
-
-	if (typeof content === 'string') {
-		body.innerHTML = content;
-	} else {
-		body.appendChild(content);
-	}
-
-	//
-	// finalize
-	dialog.appendChild(header);
-	dialog.appendChild(body);
-	let citedialogs = document.getElementById( 'refstb-dialogs' );
-	citedialogs.appendChild(dialog);
-
-	refsTB.makeDraggableDialog(dialog, header)
-
-	return dialog;
-}
-/**
- * Adds drag logic to window.
- * @param {HTMLElement} dialog The dialog to move.
- * @param {HTMLElement} header Drag handle.
- */
-refsTB.makeDraggableDialog = function(dialog, header) {
-	let isDragging = false;
-	let offsetX = 0;
-	let offsetY = 0;
-
-	header.addEventListener('mousedown', (e) => {
-		isDragging = true;
-		offsetX = e.clientX - dialog.offsetLeft;
-		offsetY = e.clientY - dialog.offsetTop;
-		document.body.style.userSelect = 'none';
-	});
-
-	document.addEventListener('mousemove', (e) => {
-		if (!isDragging) return;
-		dialog.style.right = 'auto';
-		dialog.style.bottom = 'auto';
-		dialog.style.left = (e.clientX - offsetX) + 'px';
-		dialog.style.top = (e.clientY - offsetY) + 'px';
-	});
-
-	document.addEventListener('mouseup', () => {
-		isDragging = false;
-		document.body.style.userSelect = '';
-	});
-}
-
 //
 // Init
 //
 if (typeof window !== 'undefined'){
-	mw.loader.using( [ "ext.gadget.lib-toolbar", "ext.gadget.NavFrame" ] , function() {
+	mw.loader.using( [ "ext.gadget.lib-toolbar", "ext.gadget.NavFrame", "ext.gadget.lib-SimpleDragDialog" ] , function() {
 		refsTB.init();
 	} );
 }
