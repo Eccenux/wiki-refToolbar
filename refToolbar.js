@@ -36,7 +36,7 @@ if (typeof window !== 'undefined' && document.cookie.indexOf("js_refsTB_critical
 
 let refsTB = {
 	/** Version of the gadget */
-	version: '1.6.0',
+	version: '1.6.1',
 	/** Number of forms */
 	numforms: 0,
 
@@ -81,7 +81,7 @@ let refsTB = {
 			citemain.appendChild( this.addOption(()=>refsTB.citeAnything(), "Uniwersalny" ) );
 			citemain.insertAdjacentText('beforeend', ' • ');
 			citemain.appendChild( this.addOption(()=>refsTB.citeNamedRef(), "Istniejące przypisy" ) );
-			citemain.appendChild( this.addOption(()=>refsTB.dispErrors(), "Sprawdzenie błędów" ) );
+			citemain.appendChild( this.addOption(()=>refsTB.checkErrorsForm(), "Sprawdzenie błędów" ) );
 			citemain.insertAdjacentText('beforeend', ' • ');
 			citemain.appendChild( this.addOption(()=>refsTB.hideInitial(), "Zamknij" ) );
 			let topEditor = document.querySelector('.wikiEditor-ui-top');
@@ -163,6 +163,38 @@ refsTB.createOrGetForm = function (subclass, title) {
 	refsTB._citeCurrentForm = formContainer;
 	return formContainer.querySelector('form');
 };
+/**
+ * Get SDD from the container.
+ * @param {Element} form 
+ * @returns {SimpleDragDialog}
+ */
+refsTB.getSdd = function(form) {
+	let dialog = form.closest('.refstb-citediv');
+	return dialog.uSdd;
+}
+/**
+ * Move the dialog close to the editor on the Y.
+ * @param {Element} form 
+ * @returns {SimpleDragDialog}
+ */
+refsTB.stickDialogToEditor = function(dialog, {gap = 10} = {}) {
+	const dialogRect = dialog.getBoundingClientRect();
+	const toolbar = document.querySelector('#wikiEditor-ui-toolbar');
+	if (!toolbar) {
+		return false;
+	}
+	const toolbarRect = toolbar.getBoundingClientRect();
+
+	// compute Y so dialog bottom is just above toolbar top
+	let y = toolbarRect.top - dialogRect.height - gap;
+	//y -= window.scrollY;
+
+	// apply and account for scroll
+	if (y > 0) {
+		dialog.style.top = y + 'px';
+	}
+};
+
 /** Check and make sure form is ready. */
 refsTB.isFormReady = function (form_el) {
 	if (form_el._refstbDone) {
@@ -731,6 +763,10 @@ refsTB.citeNamedRef = async function () {
 
 	}
 	refsTB.finalizeForm(form_el);
+	// re-position
+	const sdd = refsTB.getSdd(form_el);
+	sdd.center({x:1, y:0});
+	refsTB.stickDialogToEditor(sdd.dialog);
 }
 
 refsTB.addnamedcite = function (citeform) {
@@ -930,7 +966,8 @@ refsTB.errorCheck = function () {
 	}
 }
 
-refsTB.dispErrors = function () {
+/** Error check form. */
+refsTB.checkErrorsForm = function () {
 	refsTB.oldFormHide();
 	var title = 'Sprawdzanie błędów';
 	const form_el = refsTB.createOrGetForm('errors-check', title);
@@ -946,8 +983,13 @@ refsTB.dispErrors = function () {
 		'';
 	form_el.querySelector('.refstb-submit').addEventListener('click', ()=>refsTB.doErrorCheck());
 	refsTB.finalizeForm(form_el);
+	// re-position
+	const sdd = refsTB.getSdd(form_el);
+	sdd.center({x:1, y:0});
+	refsTB.stickDialogToEditor(sdd.dialog);
 }
 
+/** Error check execution and results. */
 refsTB.doErrorCheck = function () {
 	if (refsTB.numforms !== 0) {
 		refsTB.citeCurrentHide();
