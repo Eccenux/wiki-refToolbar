@@ -36,7 +36,7 @@ if (typeof window !== 'undefined' && document.cookie.indexOf("js_refsTB_critical
 
 let refsTB = {
 	/** Version of the gadget */
-	version: '1.6.1',
+	version: '1.7.0',
 	/** Number of forms */
 	numforms: 0,
 
@@ -842,13 +842,14 @@ refsTB.gotoErrorCode = function (code) {
 	}
 }
 refsTB.gotoErrorCodeHTML = function (code) {
-	var search_icon = '//upload.wikimedia.org/wikipedia/commons/thumb/a/ad/VisualEditor_-_Icon_-_Search-big.svg/20px-VisualEditor_-_Icon_-_Search-big.svg.png';
-	return '<img'
-		+ ' style="margin:0 .3em; float:right;"'
-		+ ' src="'+search_icon+'" alt="szukaj"'
-		+ ' onclick="refsTB.gotoErrorCode(\''+encodeURIComponent(code)+'\')"'
-		+ ' />'
-	;
+	let search_icon = 'https://upload.wikimedia.org/wikipedia/commons/a/ad/VisualEditor_-_Icon_-_Search-big.svg';
+	let img = document.createElement( 'input' );
+	img.style.cssText = "margin:0 .3em; float:right; max-width:20px;";
+	img.src = search_icon; img.alt = "szukaj";
+	img.setAttribute( 'data-code', encodeURIComponent(code) );
+	img.setAttribute( 'onclick', 'refsTB.gotoErrorCode(this.getAttribute("data-code")); return false;' );
+	img.type = "image";
+	return img.outerHTML;
 }
 refsTB.errorCheck = function () {
 	var allrefs = refsTB.getAllRefs();
