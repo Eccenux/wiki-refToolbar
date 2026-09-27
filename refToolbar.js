@@ -36,7 +36,7 @@ if (typeof window !== 'undefined' && document.cookie.indexOf("js_refsTB_critical
 
 let refsTB = {
 	/** Version of the gadget */
-	version: '1.7.0',
+	version: '1.8.0',
 	/** Number of forms */
 	numforms: 0,
 
@@ -309,9 +309,10 @@ refsTB.citeWeb = function () {
 		'<td width="120"><label for="zarchiwizowano">&nbsp;Data archiwizacji: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="zarchiwizowano"></td></tr>'+
 		'</table>'+
-		'<input type="button" value="Dodaj przypis" class="refstb-addcites"> <button type="reset">Reset</button>'+
+		'<input type="submit" value="Dodaj przypis" class="refstb-addcites"> <button type="reset">Reset</button>'+
 	'';
-	form_el.querySelector('.refstb-addcites').addEventListener('click', ()=>{refsTB.addcites(form_el)});
+	// note that submit is used to suggest browsers to save details to internal form memory
+	form_el.addEventListener('submit', (event)=>{event.preventDefault(); refsTB.addcites(form_el)});
 	refsTB.finalizeForm(form_el);
 	refsTB.parseCiteForm(form_el);
 }
@@ -393,9 +394,9 @@ refsTB.citeBook = function () {
 		'<td width="120"><label for="oclc">&nbsp;OCLC: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="oclc"></td></tr>'+
 	'</table>'+
-		'<input type="button" value="Dodaj przypis" class="refstb-addcites"> <button type="reset">Reset</button>'+
+		'<input type="submit" value="Dodaj przypis" class="refstb-addcites"> <button type="reset">Reset</button>'+
 	'';
-	form_el.querySelector('.refstb-addcites').addEventListener('click', ()=>{refsTB.addcites(form_el)});
+	form_el.addEventListener('submit', (event)=>{event.preventDefault(); refsTB.addcites(form_el)});
 	refsTB.finalizeForm(form_el);
 	refsTB.parseCiteForm(form_el);
 	createCollapseButtons(form_el);
@@ -449,9 +450,9 @@ refsTB.citeJournal = function () {
 		'<td width="120"><label for="refname">&nbsp;Nazwa przypisu<sup>*</sup>: </label></td>'+
 			'<td width="400"><input type="text" style="width:100%" id="refname" placeholder="wpisz * aby wstawić szablon bez znaczników &lt;ref&gt;"></td></tr>'+
 		'</table>'+
-		'<input type="button" value="Dodaj przypis" class="refstb-addcites"> <button type="reset">Reset</button>'+
+		'<input type="submit" value="Dodaj przypis" class="refstb-addcites"> <button type="reset">Reset</button>'+
 	'';
-	form_el.querySelector('.refstb-addcites').addEventListener('click', ()=>{refsTB.addcites(form_el)});
+	form_el.addEventListener('submit', (event)=>{event.preventDefault(); refsTB.addcites(form_el)});
 	refsTB.finalizeForm(form_el);
 	refsTB.parseCiteForm(form_el);
 }
@@ -543,9 +544,9 @@ refsTB.citeAnything = function () {
 	'</table>'+
 		'</td></tr>'+
 		'</table>'+
-		'<input type="button" value="Dodaj przypis" class="refstb-addcites"> <button type="reset">Reset</button>'+
+		'<input type="submit" value="Dodaj przypis" class="refstb-addcites"> <button type="reset">Reset</button>'+
 	'';
-	form_el.querySelector('.refstb-addcites').addEventListener('click', ()=>{refsTB.addcites(form_el)});
+	form_el.addEventListener('submit', (event)=>{event.preventDefault(); refsTB.addcites(form_el)});
 	refsTB.finalizeForm(form_el);
 	refsTB.parseCiteForm(form_el);
 	createCollapseButtons(form_el);
