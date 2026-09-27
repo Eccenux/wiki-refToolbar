@@ -36,7 +36,7 @@ if (typeof window !== 'undefined' && document.cookie.indexOf("js_refsTB_critical
 
 let refsTB = {
 	/** Version of the gadget */
-	version: '1.8.1',
+	version: '1.8.2',
 	/** Number of forms */
 	numforms: 0,
 
@@ -253,30 +253,6 @@ refsTB.getTime = function () {
 	return (newtime);
 }
 
-refsTB.parseCiteForm = function (form) {
-	var els = form.getElementsByTagName('input');
-	for (var i=0; i<els.length; i++)
-	{
-		if (els[i].getAttribute('type')!='hidden')
-		{
-			els[i].setAttribute('tabindex', 100+i);
-		}
-		if (els[i].getAttribute('type')=='text')
-		{
-			els[i].onkeypress = function(e) {
-				if(window.event) // IE
-				{
-					e = window.event;
-				}
-				if (e.keyCode == '13') {
-					refsTB.addcites(form);
-					return false;
-				}
-			};
-		}
-	}
-}
-
 refsTB.citeWeb = function () {
 	refsTB.oldFormHide();
 	var template = "Cytuj stronę";
@@ -324,7 +300,6 @@ refsTB.citeWeb = function () {
 	// note that submit is used to suggest browsers to save details to internal form memory
 	form_el.addEventListener('submit', (event)=>{event.preventDefault(); refsTB.addcites(form_el)});
 	refsTB.finalizeForm(form_el);
-	refsTB.parseCiteForm(form_el);
 }
 
 refsTB.citeBook = function () {
@@ -408,7 +383,6 @@ refsTB.citeBook = function () {
 	'';
 	form_el.addEventListener('submit', (event)=>{event.preventDefault(); refsTB.addcites(form_el)});
 	refsTB.finalizeForm(form_el);
-	refsTB.parseCiteForm(form_el);
 	createCollapseButtons(form_el);
 }
 
@@ -464,7 +438,6 @@ refsTB.citeJournal = function () {
 	'';
 	form_el.addEventListener('submit', (event)=>{event.preventDefault(); refsTB.addcites(form_el)});
 	refsTB.finalizeForm(form_el);
-	refsTB.parseCiteForm(form_el);
 }
 
 refsTB.citeAnything = function () {
@@ -558,7 +531,6 @@ refsTB.citeAnything = function () {
 	'';
 	form_el.addEventListener('submit', (event)=>{event.preventDefault(); refsTB.addcites(form_el)});
 	refsTB.finalizeForm(form_el);
-	refsTB.parseCiteForm(form_el);
 	createCollapseButtons(form_el);
 }
 
