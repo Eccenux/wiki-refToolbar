@@ -36,7 +36,7 @@ if (typeof window !== 'undefined' && document.cookie.indexOf("js_refsTB_critical
 
 let refsTB = {
 	/** Version of the gadget */
-	version: '1.8.0',
+	version: '1.8.1',
 	/** Number of forms */
 	numforms: 0,
 
@@ -59,6 +59,16 @@ let refsTB = {
 				that.easyCiteMain();
 			}
 		} );
+
+		// hide on ESC
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape'
+				&& document.activeElement
+				&& document.activeElement.closest('.refstb-dialog')
+			) {
+				this.citeCurrentHide();
+			}
+		});
 	},
 	/** Shows and hides the form */
 	easyCiteMain: function() {
